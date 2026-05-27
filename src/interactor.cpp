@@ -171,6 +171,9 @@ void operate(std::vector<std::string> got, AccountSystem &account, TrainSystem &
             turn_int(got[index(got, "-g")]));
         account.modify_profile(curname, username, info);
     }
+    else if(got[1] == "add_train"){
+
+    }
     else if(got[1] == "exit"){
         account.exit();
     }

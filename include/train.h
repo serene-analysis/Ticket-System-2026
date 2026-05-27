@@ -4,7 +4,7 @@
 
 using Ttrain = string_info<int>;
 using TtrainMemory = int_info<tuple<int, stationNames, int, int100, int, int100, int100, int, int, char, mat>>;
-using TstationerInfo = string_info<char20>;
+using TstationerInfo = stationName_info<char20>;
 
 struct TrainSystem{
     BPT<Ttrain> hidden_, released_;

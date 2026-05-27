@@ -205,6 +205,53 @@ struct personName{
 
 struct stationName{
     chineseCharacter ch[10];
+    friend bool operator<(stationName now, stationName oth){
+        for(int i=0;i<10;i++){
+            if(now.ch[i] < oth.ch[i]){
+                return true;
+            }
+            if(now.ch[i] > oth.ch[i]){
+                return false;
+            }
+        }
+        return false;
+    }
+    friend bool operator>(stationName now, stationName oth){
+        for(int i=0;i<10;i++){
+            if(now.ch[i] > oth.ch[i]){
+                return true;
+            }
+            if(now.ch[i] < oth.ch[i]){
+                return false;
+            }
+        }
+        return false;
+    }
+    friend bool operator!=(stationName now, stationName oth){
+        for(int i=0;i<10;i++){
+            if(now.ch[i] != oth.ch[i]){
+                return true;
+            }
+        }
+        return false;
+    }
+    friend bool operator==(stationName now, stationName oth){
+        for(int i=0;i<10;i++){
+            if(now.ch[i] != oth.ch[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+    friend std::ostream& operator<<(std::ostream& out, stationName now){
+        for(int i=0;i<10;i++){
+            if(now.ch[i] != chineseCharacter()){
+                out << now.ch[i];
+            }
+            else break;
+        }
+        return out;
+    }
 };
 
 struct stationNames{
@@ -377,6 +424,42 @@ struct string_info{
         return now.value >= oth.value;
     }
     friend bool operator>(string_info now, string_info oth){
+        if(now.key != oth.key){
+            return now.key > oth.key;
+        }
+        return now.value > oth.value;
+    }
+};
+
+template<typename tp>
+struct stationName_info{
+    stationName key;
+    tp value;
+    stationName_info(){
+        
+        return;
+    }
+    stationName_info(stationName gkey, tp gvalue){
+        key = gkey;
+        value = gvalue;
+        return;
+    }
+    friend bool operator==(stationName_info now, stationName_info oth){
+        if(!similar(now, oth)){
+            return false;
+        }
+        return now.value == oth.value;
+    }
+    friend bool operator!=(stationName_info now, stationName_info oth){
+        return !(now == oth);
+    }
+    friend bool operator>=(stationName_info now, stationName_info oth){
+        if(now.key != oth.key){
+            return now.key > oth.key;
+        }
+        return now.value >= oth.value;
+    }
+    friend bool operator>(stationName_info now, stationName_info oth){
         if(now.key != oth.key){
             return now.key > oth.key;
         }
