@@ -148,21 +148,21 @@ void operate(std::vector<std::string> got, AccountSystem &account, TrainSystem &
         //std::cout << "fir = " << fir << std::endl;
         account.add_user(curname, username, nv, fir);
     }
-    if(got[1] == "login"){
+    else if(got[1] == "login"){
         char64 username = turn_char64(got[index(got, "-u")]);
         char30 password = turn_char30(got[index(got, "-p")]);
         account.login(username, password);
     }
-    if(got[1] == "logout"){
+    else if(got[1] == "logout"){
         char64 username = turn_char64(got[index(got, "-u")]);
         account.logout(username);
     }
-    if(got[1] == "query_profile"){
+    else if(got[1] == "query_profile"){
         char64 curname = turn_char20(got[index(got, "-c")]);
         char64 username = turn_char64(got[index(got, "-u")]);
         account.query_profile(curname, username);
     }
-    if(got[1] == "modify_profile"){
+    else if(got[1] == "modify_profile"){
         char64 curname = turn_char20(got[index(got, "-c")]);
         char64 username = turn_char64(got[index(got, "-u")]);
         Taccountinfo info(turn_char30(got[index(got, "-p")]),
@@ -171,10 +171,10 @@ void operate(std::vector<std::string> got, AccountSystem &account, TrainSystem &
             turn_int(got[index(got, "-g")]));
         account.modify_profile(curname, username, info);
     }
-    if(got[1] == "exit"){
+    else if(got[1] == "exit"){
         account.exit();
     }
-    throw false;
+    else throw false;
 }
 
 void Interactor::tian(AccountSystem &account, TrainSystem &train, OrderSystem &order){
