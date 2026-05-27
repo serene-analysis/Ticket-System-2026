@@ -18,7 +18,7 @@ template<typename Key, typename Value>
 class LRUCache {
 private:
     static const int HASH_SIZE = 1024;
-    static const int MAX_CAP = 256;
+    static const int MAX_CAP = 8;
 
     struct Node {
         Key key;
@@ -285,6 +285,7 @@ public:
     //初始化偏移量为 delta 的块
 
     void initialise(std::string FN = "", int x = 0) {
+        //std::cerr << "sizeofRiver = " << sizeofRiver << std::endl;
         int delta = x * sizeofRiver;
         //std::cout << "MemoryRiver : initialise " << FN << ", delta = " << delta << std::endl;
         if (FN != "") file_name = FN;
