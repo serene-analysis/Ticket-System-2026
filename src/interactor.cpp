@@ -174,6 +174,7 @@ void operate(std::vector<std::string> got, AccountSystem &account, TrainSystem &
     if(got[1] == "exit"){
         account.exit();
     }
+    throw false;
 }
 
 void Interactor::tian(AccountSystem &account, TrainSystem &train, OrderSystem &order){
