@@ -1,0 +1,26 @@
+# CMake generated Testfile for 
+# Source directory: /home/enovo/STLite-ACM-2026/deque
+# Build directory: /home/enovo/STLite-ACM-2026/build/deque
+# 
+# This file includes the relevant testing commands required for 
+# testing this directory and lists subdirectories to be tested as well.
+add_test(deque_one "sh" "-c" "/home/enovo/STLite-ACM-2026/build/deque/deque_one >/tmp/deque_one_out.txt && diff -u /home/enovo/STLite-ACM-2026/deque/data/one/answer.txt /tmp/deque_one_out.txt >/tmp/deque_one_diff.txt")
+set_tests_properties(deque_one PROPERTIES  _BACKTRACE_TRIPLES "/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;22;add_test;/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;29;add_deque_case;/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;0;")
+add_test(deque_one_memcheck "sh" "-c" "/home/enovo/STLite-ACM-2026/build/deque/deque_one_memcheck >/tmp/deque_one_memcheck_out.txt && diff -u /home/enovo/STLite-ACM-2026/deque/data/one.memcheck/answer.txt /tmp/deque_one_memcheck_out.txt >/tmp/deque_one_memcheck_diff.txt")
+set_tests_properties(deque_one_memcheck PROPERTIES  _BACKTRACE_TRIPLES "/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;22;add_test;/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;30;add_deque_case;/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;0;")
+add_test(deque_two "sh" "-c" "/home/enovo/STLite-ACM-2026/build/deque/deque_two >/tmp/deque_two_out.txt && diff -u /home/enovo/STLite-ACM-2026/deque/data/two/answer.txt /tmp/deque_two_out.txt >/tmp/deque_two_diff.txt")
+set_tests_properties(deque_two PROPERTIES  _BACKTRACE_TRIPLES "/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;22;add_test;/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;31;add_deque_case;/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;0;")
+add_test(deque_two_memcheck "sh" "-c" "/home/enovo/STLite-ACM-2026/build/deque/deque_two_memcheck >/tmp/deque_two_memcheck_out.txt && diff -u /home/enovo/STLite-ACM-2026/deque/data/two.memcheck/answer.txt /tmp/deque_two_memcheck_out.txt >/tmp/deque_two_memcheck_diff.txt")
+set_tests_properties(deque_two_memcheck PROPERTIES  _BACKTRACE_TRIPLES "/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;22;add_test;/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;32;add_deque_case;/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;0;")
+add_test(deque_three "sh" "-c" "/home/enovo/STLite-ACM-2026/build/deque/deque_three >/tmp/deque_three_out.txt && diff -u /home/enovo/STLite-ACM-2026/deque/data/three/answer.txt /tmp/deque_three_out.txt >/tmp/deque_three_diff.txt")
+set_tests_properties(deque_three PROPERTIES  _BACKTRACE_TRIPLES "/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;22;add_test;/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;33;add_deque_case;/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;0;")
+add_test(deque_three_memcheck "sh" "-c" "/home/enovo/STLite-ACM-2026/build/deque/deque_three_memcheck >/tmp/deque_three_memcheck_out.txt && diff -u /home/enovo/STLite-ACM-2026/deque/data/three.memcheck/answer.txt /tmp/deque_three_memcheck_out.txt >/tmp/deque_three_memcheck_diff.txt")
+set_tests_properties(deque_three_memcheck PROPERTIES  _BACKTRACE_TRIPLES "/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;22;add_test;/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;34;add_deque_case;/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;0;")
+add_test(deque_four "sh" "-c" "/home/enovo/STLite-ACM-2026/build/deque/deque_four >/tmp/deque_four_out.txt && diff -u /home/enovo/STLite-ACM-2026/deque/data/four/answer.txt /tmp/deque_four_out.txt >/tmp/deque_four_diff.txt")
+set_tests_properties(deque_four PROPERTIES  _BACKTRACE_TRIPLES "/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;22;add_test;/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;35;add_deque_case;/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;0;")
+add_test(deque_four_memcheck "sh" "-c" "/home/enovo/STLite-ACM-2026/build/deque/deque_four_memcheck >/tmp/deque_four_memcheck_out.txt && diff -u /home/enovo/STLite-ACM-2026/deque/data/four.memcheck/answer.txt /tmp/deque_four_memcheck_out.txt >/tmp/deque_four_memcheck_diff.txt")
+set_tests_properties(deque_four_memcheck PROPERTIES  _BACKTRACE_TRIPLES "/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;22;add_test;/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;36;add_deque_case;/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;0;")
+add_test(deque_five "sh" "-c" "/home/enovo/STLite-ACM-2026/build/deque/deque_five >/tmp/deque_five_out.txt && diff -u /home/enovo/STLite-ACM-2026/deque/data/five/answer.txt /tmp/deque_five_out.txt >/tmp/deque_five_diff.txt")
+set_tests_properties(deque_five PROPERTIES  _BACKTRACE_TRIPLES "/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;22;add_test;/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;37;add_deque_case;/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;0;")
+add_test(deque_six "sh" "-c" "/home/enovo/STLite-ACM-2026/build/deque/deque_six >/tmp/deque_six_out.txt && diff -u /home/enovo/STLite-ACM-2026/deque/data/six/answer.txt /tmp/deque_six_out.txt >/tmp/deque_six_diff.txt")
+set_tests_properties(deque_six PROPERTIES  _BACKTRACE_TRIPLES "/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;22;add_test;/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;38;add_deque_case;/home/enovo/STLite-ACM-2026/deque/CMakeLists.txt;0;")

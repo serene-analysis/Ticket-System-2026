@@ -1,0 +1,1 @@
+/usr/bin/g++ -g -g -fsanitize=address -fsanitize=undefined -fsanitize=leak CMakeFiles/vector_four.dir/data/four/code.cpp.o -o vector_four 

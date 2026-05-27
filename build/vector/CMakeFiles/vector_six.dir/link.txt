@@ -1,0 +1,1 @@
+/usr/bin/g++ -g -g -fsanitize=address -fsanitize=undefined -fsanitize=leak CMakeFiles/vector_six.dir/data/six/code.cpp.o -o vector_six 

@@ -1,0 +1,173 @@
+Start testing: Mar 10 16:35 CST
+----------------------------------------------------------
+1/10 Testing: deque_one
+1/10 Test: deque_one
+Command: "/usr/bin/sh" "-c" "/home/enovo/STLite-ACM-2026/build/deque/deque_one >/tmp/deque_one_out.txt && diff -u /home/enovo/STLite-ACM-2026/deque/data/one/answer.txt /tmp/deque_one_out.txt >/tmp/deque_one_diff.txt"
+Directory: /home/enovo/STLite-ACM-2026/build/deque
+"deque_one" start time: Mar 10 16:35 CST
+Output:
+----------------------------------------------------------
+double free or corruption (out)
+Aborted (core dumped)
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Failed.
+"deque_one" end time: Mar 10 16:35 CST
+"deque_one" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/10 Testing: deque_one_memcheck
+2/10 Test: deque_one_memcheck
+Command: "/usr/bin/sh" "-c" "/home/enovo/STLite-ACM-2026/build/deque/deque_one_memcheck >/tmp/deque_one_memcheck_out.txt && diff -u /home/enovo/STLite-ACM-2026/deque/data/one.memcheck/answer.txt /tmp/deque_one_memcheck_out.txt >/tmp/deque_one_memcheck_diff.txt"
+Directory: /home/enovo/STLite-ACM-2026/build/deque
+"deque_one_memcheck" start time: Mar 10 16:35 CST
+Output:
+----------------------------------------------------------
+double free or corruption (out)
+Aborted (core dumped)
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Failed.
+"deque_one_memcheck" end time: Mar 10 16:35 CST
+"deque_one_memcheck" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/10 Testing: deque_two
+3/10 Test: deque_two
+Command: "/usr/bin/sh" "-c" "/home/enovo/STLite-ACM-2026/build/deque/deque_two >/tmp/deque_two_out.txt && diff -u /home/enovo/STLite-ACM-2026/deque/data/two/answer.txt /tmp/deque_two_out.txt >/tmp/deque_two_diff.txt"
+Directory: /home/enovo/STLite-ACM-2026/build/deque
+"deque_two" start time: Mar 10 16:35 CST
+Output:
+----------------------------------------------------------
+terminate called after throwing an instance of 'sjtu::deque<int>::invalid_push'
+Aborted (core dumped)
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Failed.
+"deque_two" end time: Mar 10 16:35 CST
+"deque_two" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/10 Testing: deque_two_memcheck
+4/10 Test: deque_two_memcheck
+Command: "/usr/bin/sh" "-c" "/home/enovo/STLite-ACM-2026/build/deque/deque_two_memcheck >/tmp/deque_two_memcheck_out.txt && diff -u /home/enovo/STLite-ACM-2026/deque/data/two.memcheck/answer.txt /tmp/deque_two_memcheck_out.txt >/tmp/deque_two_memcheck_diff.txt"
+Directory: /home/enovo/STLite-ACM-2026/build/deque
+"deque_two_memcheck" start time: Mar 10 16:35 CST
+Output:
+----------------------------------------------------------
+terminate called after throwing an instance of 'sjtu::deque<int>::invalid_push'
+Aborted (core dumped)
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Failed.
+"deque_two_memcheck" end time: Mar 10 16:35 CST
+"deque_two_memcheck" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/10 Testing: deque_three
+5/10 Test: deque_three
+Command: "/usr/bin/sh" "-c" "/home/enovo/STLite-ACM-2026/build/deque/deque_three >/tmp/deque_three_out.txt && diff -u /home/enovo/STLite-ACM-2026/deque/data/three/answer.txt /tmp/deque_three_out.txt >/tmp/deque_three_diff.txt"
+Directory: /home/enovo/STLite-ACM-2026/build/deque
+"deque_three" start time: Mar 10 16:35 CST
+Output:
+----------------------------------------------------------
+double free or corruption (out)
+Aborted (core dumped)
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Failed.
+"deque_three" end time: Mar 10 16:35 CST
+"deque_three" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/10 Testing: deque_three_memcheck
+6/10 Test: deque_three_memcheck
+Command: "/usr/bin/sh" "-c" "/home/enovo/STLite-ACM-2026/build/deque/deque_three_memcheck >/tmp/deque_three_memcheck_out.txt && diff -u /home/enovo/STLite-ACM-2026/deque/data/three.memcheck/answer.txt /tmp/deque_three_memcheck_out.txt >/tmp/deque_three_memcheck_diff.txt"
+Directory: /home/enovo/STLite-ACM-2026/build/deque
+"deque_three_memcheck" start time: Mar 10 16:35 CST
+Output:
+----------------------------------------------------------
+double free or corruption (out)
+Aborted (core dumped)
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Failed.
+"deque_three_memcheck" end time: Mar 10 16:35 CST
+"deque_three_memcheck" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/10 Testing: deque_four
+7/10 Test: deque_four
+Command: "/usr/bin/sh" "-c" "/home/enovo/STLite-ACM-2026/build/deque/deque_four >/tmp/deque_four_out.txt && diff -u /home/enovo/STLite-ACM-2026/deque/data/four/answer.txt /tmp/deque_four_out.txt >/tmp/deque_four_diff.txt"
+Directory: /home/enovo/STLite-ACM-2026/build/deque
+"deque_four" start time: Mar 10 16:35 CST
+Output:
+----------------------------------------------------------
+double free or corruption (out)
+Aborted (core dumped)
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Failed.
+"deque_four" end time: Mar 10 16:35 CST
+"deque_four" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/10 Testing: deque_four_memcheck
+8/10 Test: deque_four_memcheck
+Command: "/usr/bin/sh" "-c" "/home/enovo/STLite-ACM-2026/build/deque/deque_four_memcheck >/tmp/deque_four_memcheck_out.txt && diff -u /home/enovo/STLite-ACM-2026/deque/data/four.memcheck/answer.txt /tmp/deque_four_memcheck_out.txt >/tmp/deque_four_memcheck_diff.txt"
+Directory: /home/enovo/STLite-ACM-2026/build/deque
+"deque_four_memcheck" start time: Mar 10 16:35 CST
+Output:
+----------------------------------------------------------
+terminate called after throwing an instance of 'sjtu::deque<T>::invalid_push'
+Aborted (core dumped)
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Failed.
+"deque_four_memcheck" end time: Mar 10 16:35 CST
+"deque_four_memcheck" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/10 Testing: deque_five
+9/10 Test: deque_five
+Command: "/usr/bin/sh" "-c" "/home/enovo/STLite-ACM-2026/build/deque/deque_five >/tmp/deque_five_out.txt && diff -u /home/enovo/STLite-ACM-2026/deque/data/five/answer.txt /tmp/deque_five_out.txt >/tmp/deque_five_diff.txt"
+Directory: /home/enovo/STLite-ACM-2026/build/deque
+"deque_five" start time: Mar 10 16:35 CST
+Output:
+----------------------------------------------------------
+terminate called after throwing an instance of 'sjtu::deque<T>::invalid_push'
+Aborted (core dumped)
+<end of output>
+Test time =   0.04 sec
+----------------------------------------------------------
+Test Failed.
+"deque_five" end time: Mar 10 16:35 CST
+"deque_five" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/10 Testing: deque_six
+10/10 Test: deque_six
+Command: "/usr/bin/sh" "-c" "/home/enovo/STLite-ACM-2026/build/deque/deque_six >/tmp/deque_six_out.txt && diff -u /home/enovo/STLite-ACM-2026/deque/data/six/answer.txt /tmp/deque_six_out.txt >/tmp/deque_six_diff.txt"
+Directory: /home/enovo/STLite-ACM-2026/build/deque
+"deque_six" start time: Mar 10 16:35 CST
+Output:
+----------------------------------------------------------
+terminate called after throwing an instance of 'sjtu::deque<T>::invalid_push'
+Aborted (core dumped)
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Failed.
+"deque_six" end time: Mar 10 16:35 CST
+"deque_six" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Mar 10 16:35 CST

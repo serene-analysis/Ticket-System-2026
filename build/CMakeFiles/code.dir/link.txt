@@ -1,0 +1,1 @@
+/usr/bin/c++ -g CMakeFiles/code.dir/src/account.cpp.o CMakeFiles/code.dir/src/interactor.cpp.o CMakeFiles/code.dir/src/main.cpp.o CMakeFiles/code.dir/src/order.cpp.o CMakeFiles/code.dir/src/train.cpp.o -o code 

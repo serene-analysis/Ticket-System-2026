@@ -1,0 +1,1 @@
+/usr/bin/g++ -g -g -fsanitize=address -fsanitize=undefined -fsanitize=leak CMakeFiles/deque_four_memcheck.dir/data/four.memcheck/code.cpp.o -o deque_four_memcheck 
