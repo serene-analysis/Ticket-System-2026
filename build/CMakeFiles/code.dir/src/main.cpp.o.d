@@ -1,10 +1,9 @@
 CMakeFiles/code.dir/src/main.cpp.o: \
- /home/enovo/Ticket-System/Ticket-System-2026/src/main.cpp \
- /usr/include/stdc-predef.h \
- /home/enovo/Ticket-System/Ticket-System-2026/include/interactor.h \
- /home/enovo/Ticket-System/Ticket-System-2026/include/account.h \
- /home/enovo/Ticket-System/Ticket-System-2026/include/bpt.hpp \
- /home/enovo/Ticket-System/Ticket-System-2026/include/utils.h \
+ /home/enovo/Ticket-System-2026/src/main.cpp /usr/include/stdc-predef.h \
+ /home/enovo/Ticket-System-2026/include/interactor.h \
+ /home/enovo/Ticket-System-2026/include/account.h \
+ /home/enovo/Ticket-System-2026/include/bpt.hpp \
+ /home/enovo/Ticket-System-2026/include/utils.h \
  /usr/include/c++/13/iostream /usr/include/c++/13/bits/requires_hosted.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
@@ -159,8 +158,8 @@ CMakeFiles/code.dir/src/main.cpp.o: \
  /usr/include/x86_64-linux-gnu/c++/13/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++io.h \
  /usr/include/c++/13/bits/fstream.tcc \
- /home/enovo/Ticket-System/Ticket-System-2026/include/train.h \
- /home/enovo/Ticket-System/Ticket-System-2026/include/order.h \
+ /home/enovo/Ticket-System-2026/include/train.h \
+ /home/enovo/Ticket-System-2026/include/order.h \
  /usr/include/c++/13/vector /usr/include/c++/13/bits/stl_uninitialized.h \
  /usr/include/c++/13/bits/stl_vector.h \
  /usr/include/c++/13/bits/stl_bvector.h \

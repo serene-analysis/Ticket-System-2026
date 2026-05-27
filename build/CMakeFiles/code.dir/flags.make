@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/enovo/Ticket-System/Ticket-System-2026/include
+CXX_INCLUDES = -I/home/enovo/Ticket-System-2026/include
 
 CXX_FLAGS = -g -std=gnu++17
 

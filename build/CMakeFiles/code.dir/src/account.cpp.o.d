@@ -1,9 +1,9 @@
 CMakeFiles/code.dir/src/account.cpp.o: \
- /home/enovo/Ticket-System/Ticket-System-2026/src/account.cpp \
+ /home/enovo/Ticket-System-2026/src/account.cpp \
  /usr/include/stdc-predef.h \
- /home/enovo/Ticket-System/Ticket-System-2026/include/account.h \
- /home/enovo/Ticket-System/Ticket-System-2026/include/bpt.hpp \
- /home/enovo/Ticket-System/Ticket-System-2026/include/utils.h \
+ /home/enovo/Ticket-System-2026/include/account.h \
+ /home/enovo/Ticket-System-2026/include/bpt.hpp \
+ /home/enovo/Ticket-System-2026/include/utils.h \
  /usr/include/c++/13/iostream /usr/include/c++/13/bits/requires_hosted.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \

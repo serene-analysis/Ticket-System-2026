@@ -8,11 +8,11 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/enovo/Ticket-System/Ticket-System-2026/src/account.cpp" "CMakeFiles/code.dir/src/account.cpp.o" "gcc" "CMakeFiles/code.dir/src/account.cpp.o.d"
-  "/home/enovo/Ticket-System/Ticket-System-2026/src/interactor.cpp" "CMakeFiles/code.dir/src/interactor.cpp.o" "gcc" "CMakeFiles/code.dir/src/interactor.cpp.o.d"
-  "/home/enovo/Ticket-System/Ticket-System-2026/src/main.cpp" "CMakeFiles/code.dir/src/main.cpp.o" "gcc" "CMakeFiles/code.dir/src/main.cpp.o.d"
-  "/home/enovo/Ticket-System/Ticket-System-2026/src/order.cpp" "CMakeFiles/code.dir/src/order.cpp.o" "gcc" "CMakeFiles/code.dir/src/order.cpp.o.d"
-  "/home/enovo/Ticket-System/Ticket-System-2026/src/train.cpp" "CMakeFiles/code.dir/src/train.cpp.o" "gcc" "CMakeFiles/code.dir/src/train.cpp.o.d"
+  "/home/enovo/Ticket-System-2026/src/account.cpp" "CMakeFiles/code.dir/src/account.cpp.o" "gcc" "CMakeFiles/code.dir/src/account.cpp.o.d"
+  "/home/enovo/Ticket-System-2026/src/interactor.cpp" "CMakeFiles/code.dir/src/interactor.cpp.o" "gcc" "CMakeFiles/code.dir/src/interactor.cpp.o.d"
+  "/home/enovo/Ticket-System-2026/src/main.cpp" "CMakeFiles/code.dir/src/main.cpp.o" "gcc" "CMakeFiles/code.dir/src/main.cpp.o.d"
+  "/home/enovo/Ticket-System-2026/src/order.cpp" "CMakeFiles/code.dir/src/order.cpp.o" "gcc" "CMakeFiles/code.dir/src/order.cpp.o.d"
+  "/home/enovo/Ticket-System-2026/src/train.cpp" "CMakeFiles/code.dir/src/train.cpp.o" "gcc" "CMakeFiles/code.dir/src/train.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.
