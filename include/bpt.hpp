@@ -1,5 +1,6 @@
 #pragma once
 #include "utils.h"
+#include <vector>
 #include <iostream>
 #include <fstream>
 #include <cassert>
@@ -1103,7 +1104,7 @@ std::cout << "find, skipped, nxt = " << x << std::endl;
             }
             else{
                 for(int i=0;i<size;i++){
-                    if(similar(now.val[i],value)){
+                    if(similar(now.val[i], value)){
                         std::cout << now.val[i].value << ' ';
                         found = true;
                     }
@@ -1121,12 +1122,107 @@ std::cout << "find, visited, nxt = " << x << std::endl;
         return;
     }
 
+    std::vector<T> all() {
+        int x = rt;
+        while(true){
+            block now = blocks.get_block(x);
+            if(now.type == Kleaf){
+                break;
+            }
+            else{
+                x = now.son[0];
+            }
+        }
+        std::vector<T> ret;
+        while(x){
+            block now = blocks.get_block(x);
+            int size = now.size;
+            for(int i=0;i<size;i++){
+                ret.push_back(now.value[i].value);
+            }
+            x = now.next;
+        }
+        return ret;
+    }
+
+    std::vector<T> all_similar(const T &value) {
+#ifdef DEBUG
+std::cout << "\n\n\nfind begin\n\n\n" << std::endl;
+std::cout << "value = {" << value.key << "," << value.value << "}" << std::endl;
+#endif
+        int x = rt;
+        while(true){
+            block now = blocks.get_block(x);
+            if(now.type == Kleaf){
+                break;
+            }
+            else{
+                //x = now.son[0];
+                //continue;
+                bool dw = false;
+                for(int i=0;i<now.size;i++){
+                    if(!(value >= now.val[i])){
+#ifdef DEBUG
+std::cout << "dw, now.val = " << now.val[i].key << ", now.son = " << now.son[i] << std::endl;
+#endif
+                        x = now.son[i];
+                        dw = true;
+                        break;
+                    }
+                }
+                if(!dw){
+#ifdef DEBUG
+if(now.size)std::cout << "dw, max value = " << now.val[now.size - 1].key << ", now.son = " << now.son[now.size] << std::endl;
+#endif
+                    x = now.son[now.size];
+                }
+            }
+        }
+        bool found = false;
+#ifdef DEBUG
+std::cout << "find start" << std::endl;
+#endif
+        std::vector<T> ret;
+        while(x){
+#ifdef DEBUG
+std::cout << "find, x = " << x << std::endl;
+std::cout << "key = " << blocks.get_value(0, x).key << std::endl;
+std::cout << "value = " << blocks.get_value(0, x).value << std::endl;
+#endif
+            block now = blocks.get_block(x);
+            int size = now.size;
+            if(size && smaller(now.val[size - 1], value)){
+                x = now.next;
+#ifdef DEBUG
+std::cout << "find, skipped, nxt = " << x << std::endl;
+#endif
+            }
+            else if(size && smaller(value, now.val[0])){
+                break;
+            }
+            else{
+                for(int i=0;i<size;i++){
+                    if(similar(now.val[i], value)){
+                        ret.push_back(now.val[i]);
+                        found = true;
+                    }
+                }
+                x = now.next;
+#ifdef DEBUG
+std::cout << "find, visited, nxt = " << x << std::endl;
+#endif
+            }
+        }
+        return ret;
+    }
+
     T only(const T &value) {
 #ifdef DEBUG
 std::cout << "\n\n\nfind begin\n\n\n" << std::endl;
 std::cout << "value = {" << value.key << "," << value.value << "}" << std::endl;
 #endif
         int x = rt;
+        //std::cout << "only:rt = " << rt << ", number = " << number << std::endl;
         while(true){
             block now = blocks.get_block(x);
             if(now.type == Kleaf){
@@ -1184,6 +1280,52 @@ std::cout << "find, skipped, nxt = " << x << std::endl;
 #ifdef DEBUG
 std::cout << "find, visited, nxt = " << x << std::endl;
 #endif
+            }
+        }
+        assert(false);
+        std::cout << "???" << std::endl;
+        x = rt;
+        while(true){
+            std::cout << "x = " << x << std::endl;
+            block now = blocks.get_block(x);
+            if(now.type == Kleaf){
+                break;
+            }
+            else{
+                bool dw = false;
+                for(int i=0;i<now.size;i++){
+                    if(!(value >= now.val[i])){
+                        x = now.son[i];
+                        dw = true;
+                        break;
+                    }
+                }
+                if(!dw){
+                    x = now.son[now.size];
+                }
+            }
+        }
+        std::cout << "final, x = " << x << std::endl;
+        while(x){
+std::cout << "find, x = " << x << std::endl;
+std::cout << "key = " << blocks.get_value(0, x).key << std::endl;
+            block now = blocks.get_block(x);
+            int size = now.size;
+            if(size && smaller(now.val[size - 1], value)){
+                x = now.next;
+std::cout << "find, skipped, nxt = " << x << std::endl;
+            }
+            else if(size && smaller(value, now.val[0])){
+                break;
+            }
+            else{
+                for(int i=0;i<size;i++){
+                    if(similar(now.val[i],value)){
+                        return now.val[i];
+                    }
+                }
+                x = now.next;
+std::cout << "find, visited, nxt = " << x << std::endl;
             }
         }
         assert(false);

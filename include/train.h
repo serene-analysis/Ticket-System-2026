@@ -3,22 +3,34 @@
 #include "utils.h"
 
 using Ttrain = string_info<int>;
-using TtrainMemory = int_info<tuple<int, stationNames, int, int100, int, int100, int100, int, int, char, mat>>;
-using TstationerInfo = stationName_info<char20>;
+using TtrainInfo = tuple<int, stationNames, int, int100, dailyTime, int100, int100, dateRange, char>;
+using TtrainMemory = int_info<TtrainInfo>;
+using TticketMemory = int_info<mat>;
+using TstationerInfo = stationName_info<char64>;
+//stationNum, stations[], seatNum, prices[], startTime, travelTimes[],
+//    stopoverTimes[], saleDate, type, remaining_tickets[max_date][max_num]
 
 struct TrainSystem{
     BPT<Ttrain> hidden_, released_;
     BPT<TstationerInfo> stationer_;
+    BPT<TticketMemory> ticketMemory_;
     BPT<TtrainMemory> trainMemory_;
     TrainSystem(){
         hidden_.initialise("hidden.data");
         released_.initialise("released.data");
         stationer_.initialise("stationer.data");
         trainMemory_.initialise("trainMemory.data");
+        ticketMemory_.initialise("ticketMemory.data");
         return;
     }
     ~TrainSystem(){
         
         return;
     }
+    void add_train(char64, TtrainInfo, mat);
+    void delete_train(char64);
+    void release_train(char64);
+    void query_train(char64, date);
+    void query_ticket(stationName, stationName, date, std::string);
+    void query_transfer(stationName, stationName, date, std::string);
 };

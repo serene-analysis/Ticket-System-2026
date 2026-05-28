@@ -3,7 +3,7 @@
 #include "utils.h"
 
 using Torder = string_info<int>;
-using TorderMemory = int_info<tuple<int, char20, char20, int, stationName, stationName, int>>;
+using TorderMemory = int_info<tuple<int, char20, date, stationName, Time, stationName, Time, int, int, int>>;
 
 struct OrderSystem{
     BPT<Torder> userorder_, queue_;

@@ -25,26 +25,9 @@ std::vector<std::string> Interactor::readLine() {
         }
         if (ch >= 0xE0 && ch <= 0xEF) {
             ungetc(ch, stdin);
-            while (true) {
-                int peek = getchar();
-                if (peek == ' ' || peek == '\n' || peek == '\r' || peek == EOF) {
-                    ungetc(peek, stdin);
-                    break;
-                }
-                ungetc(peek, stdin);
-                got += read_chinese();
-            }
-        }
-        else {
+            got += read_chinese();
+        } else {
             got += static_cast<char>(ch);
-            while (true) {
-                int peek = getchar();
-                if (peek == ' ' || peek == '\n' || peek == '\r' || peek == EOF) {
-                    ungetc(peek, stdin);
-                    break;
-                }
-                got += static_cast<char>(peek);
-            }
         }
     }
     if (!got.empty()) {
@@ -92,6 +75,10 @@ int turn_int(std::string str){
     return ret;
 }
 
+char turn_char(std::string str){
+    return str[0];
+}
+
 personName turn_personName(std::string str){
     personName ret;
     int len = str.length();
@@ -99,6 +86,73 @@ personName turn_personName(std::string str){
         ret.ch[i / 3].ch[0] = str[i];
         ret.ch[i / 3].ch[1] = str[i + 1];
         ret.ch[i / 3].ch[2] = str[i + 2];
+    }
+    return ret;
+}
+
+stationName turn_stationName(std::string str){
+    stationName ret;
+    int len = str.length();
+    for(int i=0;i<len;i+=3){
+        ret.ch[i / 3].ch[0] = str[i];
+        ret.ch[i / 3].ch[1] = str[i + 1];
+        ret.ch[i / 3].ch[2] = str[i + 2];
+    }
+    return ret;
+}
+
+stationNames turn_stationNames(std::string str){
+    stationNames ret;
+    std::string got;
+    int len = str.length();
+    int nc = 0;
+    for(int i=0;i<len;i++){
+        if(str[i] == '|'){
+            ret.ch[nc++] = turn_stationName(got);
+            got.clear();
+        }
+        else got += str[i];
+    }
+    ret.ch[nc++] = turn_stationName(got);
+    return ret;
+}
+
+int100 turn_int100(std::string str){
+    if(str.length() == 1 && str[0] == '_')return int100();
+    int100 ret;
+    std::string got;
+    int len = str.length();
+    int nc = 0;
+    for(int i=0;i<len;i++){
+        if(str[i] == '|'){
+            ret.v[nc++] = turn_int(got);
+            got.clear();
+        }
+        else got += str[i];
+    }
+    ret.v[nc++] = turn_int(got);
+    return ret;
+}
+
+dailyTime turn_dailyTime(std::string str){
+    int hr = (str[0] - 48) * 10 + str[1] - 48, mi = (str[3] - 48) * 10 + str[4] - 48;
+    return dailyTime(hr * 60 + mi);
+}
+
+date turn_date(std::string str){
+    return date((str[0] - 48) * 10 + str[1] - 48, (str[3] - 48) * 10 + str[4] - 48);
+}
+
+dateRange turn_dateRange(std::string str){
+    date l = date((str[0] - 48) * 10 + str[1] - 48, (str[3] - 48) * 10 + str[4] - 48),
+        r = date((str[6] - 48) * 10 + str[7] - 48, (str[9] - 48) * 10 + str[10] - 48);
+    return dateRange(l, r);
+}
+
+mat mat_fill(int x){
+    mat ret;
+    for(int i=0;i<99;i++)for(int j=0;j<99;j++){
+        ret.v[i].v[j] = x;
     }
     return ret;
 }
@@ -124,9 +178,15 @@ int index(std::vector<std::string> strs, std::string goal){
 #define g8 get<8>
 #define g9 get<9>*/
 
+#include <cstdlib>
+
 void operate(std::vector<std::string> got, AccountSystem &account, TrainSystem &train, OrderSystem &order){
     got.push_back(std::string());
     std::cout << got[0] << ' ';
+    if(got[0] == "----[3470]"){
+        exit(0);
+        return;
+    }
     if(got[1] == "add_user"){
         char64 username;
         char20 curname;
@@ -172,12 +232,53 @@ void operate(std::vector<std::string> got, AccountSystem &account, TrainSystem &
         account.modify_profile(curname, username, info);
     }
     else if(got[1] == "add_train"){
-
+        char64 trainId = turn_char64(got[index(got, "-i")]);
+        //std::cout << "add_train, index(\"-i\") = " << index(got, "-i") << std::endl;
+        TtrainInfo info;
+        int size = turn_int(got[index(got, "-n")]);
+        get<0>(info) = size;
+        get<1>(info) = turn_stationNames(got[index(got, "-s")]);
+        int seatNum = turn_int(got[index(got, "-m")]);
+        get<2>(info) = seatNum;
+        get<3>(info) = turn_int100(got[index(got, "-p")]);
+        get<4>(info) = turn_dailyTime(got[index(got, "-x")]);
+        get<5>(info) = turn_int100(got[index(got, "-t")]);
+        get<6>(info) = turn_int100(got[index(got, "-o")]);
+        get<7>(info) = turn_dateRange(got[index(got, "-d")]);
+        get<8>(info) = turn_char(got[index(got, "-y")]);
+        train.add_train(trainId, info, mat_fill(seatNum));
+    }
+    else if(got[1] == "delete_train"){
+        char64 trainId = turn_char64(got[index(got, "-i")]);
+        train.delete_train(trainId);
+    }
+    else if(got[1] == "release_train"){
+        char64 trainId = turn_char64(got[index(got, "-i")]);
+        train.release_train(trainId);
+    }
+    else if(got[1] == "query_train"){
+        char64 trainId = turn_char64(got[index(got, "-i")]);
+        date startDate = turn_date(got[index(got, "-d")]);
+        train.query_train(trainId, startDate);
+    }
+    else if(got[1] == "query_ticket"){
+        date startdate = turn_date(got[index(got, "-d")]);
+        stationName st = turn_stationName(got[index(got, "-s")]),
+            en = turn_stationName(got[index(got, "-t")]);
+        std::string type = got[index(got, "-p")];
+        train.query_ticket(st, en, startdate, type);
+    }
+    else if(got[1] == "query_transfer"){
+        date startdate = turn_date(got[index(got, "-d")]);
+        stationName st = turn_stationName(got[index(got, "-s")]),
+            en = turn_stationName(got[index(got, "-t")]);
+        std::string type = got[index(got, "-p")];
+        train.query_ticket(st, en, startdate, type);
     }
     else if(got[1] == "exit"){
         account.exit();
     }
-    else throw false;
+    //else throw false;
 }
 
 void Interactor::tian(AccountSystem &account, TrainSystem &train, OrderSystem &order){
