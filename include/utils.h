@@ -796,6 +796,10 @@ struct Time{
     friend Time operator+=(Time &now, int oth){
         return now = (now + oth);
     }
+    friend int operator-(Time now, Time oth){
+        int nd = now.d - oth.d, nt = now.t - oth.t;
+        return nd * 1440 + nt;
+    }
     friend bool operator>(Time now, Time oth){
         if(now.d == oth.d){
             return now.t > oth.t;
@@ -959,18 +963,21 @@ void sort(std::vector<tp> &gave){
     }
     sort(lef), sort(rig);
     int lp = 0, rp = 0, np = 0;
-    while(lp != lef.size() - 1 || rp != rig.size() - 1){
-        if(lp == lef.size() - 1){
+    //std::cout << "lef.size() = " << lef.size() << ", rig.size() = " << rig.size() << std::endl;
+    while(lp != lef.size() || rp != rig.size()){
+        if(lp == lef.size() ){
             gave[np++] = rig[rp++];
         }
-        else if(rp == rig.size() - 1){
+        else if(rp == rig.size() ){
             gave[np++] = lef[lp++];
         }
         else{
             if(lef[lp] < rig[rp]){
+                //std::cout << "left smaller" << std::endl;
                 gave[np++] = lef[lp++];
             }
             else{
+                //std::cout << "right smaller, time = " << get<0>(rig[rp]) << std::endl;
                 gave[np++] = rig[rp++];
             }
         }

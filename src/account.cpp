@@ -138,8 +138,15 @@ void AccountSystem::modify_profile(char64 curname, char64 username, Taccountinfo
     return;
 }
 
+void AccountSystem::clean(){
+    account_.initialise(account_.file_name, true);
+    stack_.initialise(stack_.file_name, true);
+    accountMemory_.initialise(accountMemory_.file_name, true);
+    return;
+}
+
 void AccountSystem::exit(){
-    stack_.initialise(stack_.file_name);
+    stack_.initialise(stack_.file_name, true);
     std::cout << "bye" << std::endl;
     return;
 }

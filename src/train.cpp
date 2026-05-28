@@ -18,7 +18,7 @@ void TrainSystem::add_train(char64 trainId, TtrainInfo info, mat tickets){
     }*/
     hidden_.insert(poser(trainId, cou));
     trainMemory_.insert(pointer(cou, info));
-    ticketMemory_.insert(tpointer(cou, tickets));
+    ticketMemory_.push_back(tickets);
     std::cout << '0' << std::endl;
     return;
 }
@@ -83,7 +83,7 @@ void TrainSystem::query_train(char64 trainId, date startDate){
     int100 travelTimes = get<5>(info);
     int100 stopOverTimes = get<6>(info);
     char type = get<8>(info);
-    mat tickets = ticketMemory_.only(tpointer(pos.value, mat())).value;
+    mat tickets = ticketMemory_.get(pos.value);
     std::cout << trainId << ' ' << type << std::endl;
     Time now(startDate, startTime);
     int accumulatedPrice = 0;
@@ -137,6 +137,7 @@ int cost(TtrainInfo &info, int st, int en){
 }
 
 int max_tickets(mat tickets, int st, int en, int idx){
+    //std::cout << "max_tickets : st = " << st << ", en = " << en << ", idx = " << idx << std::endl;
     int ret = int_max;
     for(int i=st;i<en;i++){
         ret = min(ret, tickets.v[idx].v[i]);
@@ -154,6 +155,9 @@ int leaving_gone_days(TtrainInfo &info, int x){
         now += travelTimes.v[i];
         now += stopTimes.v[i];
     }
+    //dailyTime mem = now;
+    //mem.reduce();
+    //std::cout << "start = " << start << ", arr = " << mem << ", days = " << now.days() << std::endl;
     return now.days();
 }
 
@@ -172,6 +176,20 @@ dailyTime leaving_time(TtrainInfo &info, int x){
     return now;
 }
 
+int leaving_time_since_begin(TtrainInfo &info, int x){
+    int100 &travelTimes = get<5>(info), &stopTimes = get<6>(info);
+    if(x == get<0>(info) - 1){
+        throw false;
+    }
+    int ret = 0;
+    //std::cout << "startTime = " << now << std::endl;
+    for(int i=0;i<x;i++){
+        ret += travelTimes.v[i];
+        ret += stopTimes.v[i];
+    }
+    return ret;
+}
+
 void TrainSystem::query_ticket(stationName st, stationName en, date curdate, std::string type){
     std::vector<sposer> all = stationer_.all_similar(sposer(st, char64()));
     int size = all.size();
@@ -180,9 +198,8 @@ void TrainSystem::query_ticket(stationName st, stationName en, date curdate, std
     for(int i=0;i<size;i++){
         poser pos = released_.only(poser(all[i].value, 0));
         pointer ptr = trainMemory_.only(pointer(pos.value, TtrainInfo()));
-        tpointer tptr = ticketMemory_.only(tpointer(pos.value, mat()));
         TtrainInfo info = ptr.value;
-        mat tickets = tptr.value;
+        mat tickets = ticketMemory_.get(pos.value);
         int spos = index(info, st), epos = index(info, en);
         if(epos == -1 || spos > epos){
             continue;
@@ -198,6 +215,7 @@ void TrainSystem::query_ticket(stationName st, stationName en, date curdate, std
         Time start(curdate, leaving_time(info, spos)), end = start + needed_time;
         oss << all[i].value << ' ' << st << ' ' << start << " -> "
             << en << ' ' << end << ' ' << needed_cost << ' ' << max_tickets(tickets, spos, epos, idx);
+        //std::cout << oss.str() << "||| needed_time = " << needed_time << std::endl;
         if(type == "cost"){
             ans.push_back(Tproposal(needed_cost, all[i].value, oss.str()));
         }
@@ -238,9 +256,8 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
     for(int i=0;i<size;i++){
         poser pos = released_.only(poser(all[i].value, 0));
         pointer ptr = trainMemory_.only(pointer(pos.value, TtrainInfo()));
-        tpointer tptr = ticketMemory_.only(tpointer(pos.value, mat()));
         TtrainInfo info = ptr.value;
-        mat tickets = tptr.value;
+        mat tickets = ticketMemory_.get(pos.value);
         int spos = index(info, st);
         date startDate = curdate - leaving_gone_days(info, spos);
         int number = get<0>(info);
@@ -280,9 +297,8 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
     for(int i=0;i<nsize;i++){
         poser pos = released_.only(poser(all[i].value, 0));
         pointer ptr = trainMemory_.only(pointer(pos.value, TtrainInfo()));
-        tpointer tptr = ticketMemory_.only(tpointer(pos.value, mat()));
         TtrainInfo info = ptr.value;
-        mat tickets = tptr.value;
+        mat tickets = ticketMemory_.get(pos.value);
         int epos = index(info, en);
         int number = get<0>(info);
         stationNames &stations = get<1>(info);
@@ -298,7 +314,7 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
             int nsize = choices.size();
             while(firstPos < nsize){
                 Tchoice current = choices[firstPos];
-                Time arrival = get<1>(current);
+                Time arrival = get<1>(current), mem = arrival;
                 int firstKeyword = get<2>(current), secondKeyword = get<3>(current);
                 char64 thirdKeyword = get<4>(current);
                 std::string firstOutput = get<5>(current);
@@ -319,10 +335,10 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
                     << en << ' ' << end << ' ' << needed_cost << ' ' << max_tickets(tickets, j, epos, idx);
                 std::string secondOutput = oss.str();
                 if(type == "cost"){
-                    firstKeyword += needed_cost, secondKeyword += needed_time;
+                    firstKeyword += needed_cost, secondKeyword += needed_time + (arrival - mem);
                 }
                 else{
-                    firstKeyword += needed_time, secondKeyword += needed_cost;
+                    firstKeyword += needed_time + (arrival - mem), secondKeyword += needed_cost;
                 }
                 proposals.push_back(Tproposal(firstKeyword, secondKeyword, thirdKeyword, all[i].value, firstOutput, secondOutput));
             }
@@ -337,5 +353,14 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
         }
     }
     std::cout << '0' << std::endl;
+    return;
+}
+
+void TrainSystem::clean(){
+    hidden_.initialise(hidden_.file_name, true);
+    released_.initialise(released_.file_name, true);
+    stationer_.initialise(stationer_.file_name, true);
+    ticketMemory_.initialise(ticketMemory_.file_name, true);
+    trainMemory_.initialise(trainMemory_.file_name, true);
     return;
 }

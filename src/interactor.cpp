@@ -183,10 +183,15 @@ int index(std::vector<std::string> strs, std::string goal){
 void operate(std::vector<std::string> got, AccountSystem &account, TrainSystem &train, OrderSystem &order){
     got.push_back(std::string());
     std::cout << got[0] << ' ';
-    if(got[0] == "----[3470]"){
-        exit(0);
-        return;
-    }
+    auto fp = got[0].begin(), sp = got[0].end();
+    fp++, sp--;
+    std::string timestamp_str(fp, sp);
+    int timestamp = turn_int(timestamp_str);
+    //std::cout << "timestamp = " << timestamp << std::endl;
+    //if(timestamp == 6948){
+    //    exit(0);
+    //    return;
+    //}
     if(got[1] == "add_user"){
         char64 username;
         char20 curname;
@@ -274,6 +279,33 @@ void operate(std::vector<std::string> got, AccountSystem &account, TrainSystem &
             en = turn_stationName(got[index(got, "-t")]);
         std::string type = got[index(got, "-p")];
         train.query_ticket(st, en, startdate, type);
+    }
+    else if(got[1] == "buy_ticket"){
+        char64 username = turn_char64(got[index(got, "-u")]);
+        char64 trainId = turn_char64(got[index(got, "-i")]);
+        date curDate = turn_date(got[index(got, "-d")]);
+        stationName st = turn_stationName(got[index(got, "-f")]),
+            en = turn_stationName(got[index(got, "-t")]);
+        int number = turn_int(got[index(got, "-n")]);
+        std::string type = got[index(got, "-q")];
+        //std::cerr << "timestamp = " << timestamp << std::endl;
+        order.buy_ticket(username, trainId, curDate, st, en, number, type, account, train, timestamp);
+    }
+    else if(got[1] == "query_order"){
+        char64 username = turn_char64(got[index(got, "-u")]);
+        order.query_order(username, account);
+    }
+    else if(got[1] == "refund_ticket"){
+        char64 username = turn_char64(got[index(got, "-u")]);
+        int num = turn_int(got[index(got, "-n")]);
+        if(num == -1){
+            num = 0;
+        }
+        order.refund_ticket(username, num, account, train);
+    }
+    else if(got[1] == "clean"){
+        account.clean(), train.clean(), order.clean();
+        std::cout << '0' << std::endl;
     }
     else if(got[1] == "exit"){
         account.exit();

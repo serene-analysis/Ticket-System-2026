@@ -19,7 +19,7 @@ template<typename Key, typename Value>
 class LRUCache {
 private:
     static const int HASH_SIZE = 1024;
-    static const int MAX_CAP = 8;
+    static const int MAX_CAP = 4;
 
     struct Node {
         Key key;
@@ -339,6 +339,7 @@ public:
     }*/
 
     block get_block(int x){
+        //std::cout << "get_block : " << x << std::endl;
         int delta = x * sizeofRiver;
 #ifdef DEBUG
 //std::cerr << "get_block : " << x << ", delta = " << delta << std::endl;
@@ -363,6 +364,7 @@ public:
                 ret.son[i] = *reinterpret_cast<int*>(ptr), ptr += sizeof(int);
             }
         }
+        //std::cout << "get_block : " << x << "end" << std::endl;
         /*int tmp = 0;
         file.read(reinterpret_cast<char*>(&tmp), sizeof(int)), ret.type = tmp;
         file.read(reinterpret_cast<char*>(&tmp), sizeof(int)), ret.size = tmp;
@@ -655,14 +657,20 @@ public:
         return;
     }
 
-    void initialise(std::string FN = "") {
+    void initialise(std::string FN = "", bool forced = false) {
         bool online = false;
 #ifdef ONLINE_JUDGE
 online = true;
 #endif
         file_name = FN;
+        if(blocks.file.is_open()){
+            blocks.file.close();
+        }
         blocks.file.open(file_name, ios::in | ios::out | ios::binary);
-        if(!blocks.file.is_open()/* || !online*/){
+        if(!blocks.file.is_open() || forced/* || !online*/){
+            if(blocks.file.is_open()){
+                blocks.file.close();
+            }
             blocks.file.open(file_name, ios::out | ios::binary);
             blocks.file.close();
             blocks.file.open(file_name, ios::in | ios::out | ios::binary);
@@ -834,13 +842,16 @@ now.out();
         }
     }
 
-    void merge(int x, int fa){
+    void merge(int x, int fa/*, int timestamp = 0*/){
+        //std::cout << "timestamp : " << timestamp << std::endl;
         block now = blocks.get_block(x);
         block pre, nxt;
         if(now.prev){
+            //std::cout << "prev = " << now.prev << std::endl;
             pre = blocks.get_block(now.prev);
         }
         if(now.next){
+            //std::cout << "next = " << now.next << std::endl;
             nxt = blocks.get_block(now.next);
         }
 #ifdef DEBUG
@@ -848,6 +859,7 @@ std::cerr << "merge : x = " << x << ", fa = " << fa << std::endl;
 now.out();
 #endif
         if(now.next && nxt.fa == fa){
+            //std::cout << "??" << std::endl;
             block oth = nxt;
 #ifdef DEBUG
 std::cerr << "with next" << std::endl;
@@ -918,6 +930,7 @@ std::cerr << "before delete, fa.size = " << blocks.get_info(Ksize, fa) << std::e
             }
         }
         else if(now.prev && pre.fa == fa){
+            //std::cout << "???" << std::endl;
             block oth = pre;
 #ifdef merge_DEBUG
 std::cerr << "with prev" << std::endl;
@@ -1003,29 +1016,31 @@ std::cerr << "before delete, fa.size = " << blocks.get_info(Ksize, fa) << std::e
             }
         }
         else{
+            //std::cout << "direct return" << std::endl;
             return;
         }
         return;
     }
 
-    void remove(const T &value) {
+    void remove(const T &value/*, int timestamp = 0*/) {
+        //std::cout << "remove, size = " << size << ", number = " << number << std::endl;
         int x = rt;
         while(true){
             block now = blocks.get_block(x);
-#ifdef DEBUG
-std::cerr << "remove, x = " << x << std::endl;
-now.out();
-#endif
+//std::cerr << "remove, x = " << x << std::endl;
             if(now.type == Kleaf){
                 bool lim = now.limited();
                 T mem = (now.size == 0 ? T() : now.val[0]);
+                //std::cout << "block size = " << now.size << std::endl;
                 if(!blocks.remove(value, x)){
                     return;
                 }
+                //std::cout << "removed" << std::endl;
                 number--;
                 update(x);
                 if(lim){
-                    merge(x, now.fa);
+                    //std::cout << "merge" << std::endl;
+                    merge(x, now.fa/*, timestamp*/);
                 }
 #ifdef DEBUG
 std::cerr << "???" << std::endl;
@@ -1433,4 +1448,112 @@ std::cout << "overall, leaf, x = " << x << std::endl;
         return;
     }*/
 
+};
+
+template<typename tp>
+class ARRAY {
+public:
+    std::string file_name;
+    fstream file;
+    LRUCache<int, tp> cache;
+    int element_count;
+    static constexpr size_t META_SIZE = sizeof(int);
+    static constexpr size_t BUF_SIZE = META_SIZE + sizeof(tp);
+    char buffer[BUF_SIZE];
+
+    void read_meta() {
+        file.seekg(0, ios::beg);
+        file.read(buffer, META_SIZE);
+        element_count = *reinterpret_cast<int*>(buffer);
+    }
+
+    void write_meta() {
+        file.seekp(0, ios::beg);
+        *reinterpret_cast<int*>(buffer) = element_count;
+        file.write(buffer, META_SIZE);
+        file.flush();
+    }
+
+    size_t get_offset(int idx) const {
+        return META_SIZE + idx * sizeof(tp);
+    }
+
+    ARRAY() = default;
+
+    explicit ARRAY(const std::string& name) : file_name(name) {}
+
+    ~ARRAY() {
+        if (file.is_open()) {
+            write_meta();
+            file.close();
+        }
+    }
+
+    void initialise(std::string name = "", bool forced = false) {
+        if (!name.empty()) {
+            file_name = name;
+        }
+        if (forced) {
+            if (file.is_open()) {
+                file.close();
+            }
+            file.open(file_name, ios::out | ios::binary | ios::trunc);
+            element_count = 0;
+            write_meta();
+            file.close();
+            file.open(file_name, ios::in | ios::out | ios::binary);
+            cache.clear();
+            return;
+        }
+        file.open(file_name, ios::in | ios::out | ios::binary);
+        if (!file.is_open()) {
+            file.open(file_name, ios::out | ios::binary);
+            element_count = 0;
+            write_meta();
+            file.close();
+            file.open(file_name, ios::in | ios::out | ios::binary);
+        } else {
+            read_meta();
+        }
+        cache.clear();
+        return;
+    }
+
+    int size() const {
+        return element_count;
+    }
+
+    void push_back(const tp& val) {
+        size_t offset = get_offset(element_count);
+        file.seekp(offset, ios::beg);
+        file.write(reinterpret_cast<const char*>(&val), sizeof(tp));
+        file.flush();
+        cache.put(element_count, val);
+        element_count++;
+        write_meta();
+    }
+
+    void set(int idx, const tp& val) {
+        size_t offset = get_offset(idx);
+        file.seekp(offset, ios::beg);
+        file.write(reinterpret_cast<const char*>(&val), sizeof(tp));
+        file.flush();
+        cache.put(idx, val);
+    }
+
+    tp get(int idx) {
+        tp val;
+        if (cache.get(idx, val)) {
+            return val;
+        }
+        size_t offset = get_offset(idx);
+        file.seekg(offset, ios::beg);
+        file.read(reinterpret_cast<char*>(&val), sizeof(tp));
+        cache.put(idx, val);
+        return val;
+    }
+    void close() {
+        write_meta();
+        file.close();
+    }
 };

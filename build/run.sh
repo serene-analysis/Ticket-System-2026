@@ -14,5 +14,6 @@ rm -f *.data
 echo "已删除build目录下的所有.data文件"
 
 # 3. 运行可执行文件（若程序需要参数，可在./bookstore后添加）
+
 make -j4
 ./code

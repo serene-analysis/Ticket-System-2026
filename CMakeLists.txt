@@ -18,3 +18,16 @@ file(GLOB SOURCES "src/*.cpp")
 
 # 生成可执行文件（bookstore是生成的程序名，SOURCES是所有源文件）
 add_executable(code ${SOURCES})
+
+set(STACK_SIZE 1073741824) 
+
+if(MSVC)
+    # Visual Studio 编译器
+    target_link_options(code PRIVATE "/STACK:${STACK_SIZE}")
+elseif(MINGW)
+    # Windows MinGW 编译器
+    target_link_options(code PRIVATE "-Wl,--stack,${STACK_SIZE}")
+else()
+    # Linux / macOS 编译器 (GCC/Clang)
+    target_link_options(code PRIVATE "-Wl,-z,stack-size=${STACK_SIZE}")
+endif()

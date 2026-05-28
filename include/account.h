@@ -24,5 +24,6 @@ struct AccountSystem{
     void logout(char64);
     void query_profile(char64, char64);
     void modify_profile(char64, char64, Taccountinfo);
+    void clean();
     void exit();
 };
