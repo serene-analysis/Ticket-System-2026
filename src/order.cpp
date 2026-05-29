@@ -38,7 +38,7 @@ void OrderSystem::buy_ticket(char64 username, char64 trainId, date curDate, stat
     TorderInfo mem(timestamp, trainId, startDate, st, leavingTime,
         en, arrivalTime, prices, number, username);
     if(maxNumber < number){
-        if(type != "true"){
+        if(type != "true" || number > get<2>(info)){
             std::cout << "-1" << std::endl;
             return;
         }
@@ -129,6 +129,15 @@ void OrderSystem::refund_ticket(char64 username, int num, AccountSystem& account
     }
     TorderInfo orderInfo = back_order(username, num, account, train);
     int timestamp = get<0>(orderInfo);
+    if(refunded_.have(timePoser(timestamp, 0))){
+        std::cout << "-1" << std::endl;
+        return;
+    }
+    if(timequeue_.have(timePoser(timestamp, 0))){
+        refunded_.insert(timePoser(timestamp, 0));
+        std::cout << "0" << std::endl;
+        return;
+    }
     char64 trainId = get<1>(orderInfo);
     poser pos = train.released_.only(poser(trainId, 0));
     date startDate = get<2>(orderInfo);
