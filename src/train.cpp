@@ -55,6 +55,10 @@ void TrainSystem::release_train(char64 trainId){
 }
 
 void TrainSystem::query_train(char64 trainId, date startDate){
+    if(startDate < date(2, 1)){
+        std::cout << "-1" << std::endl;
+        return;
+    }
     if(!hidden_.have(poser(trainId, 0)) && !released_.have(poser(trainId, 0))){
         std::cout << "-1" << std::endl;
         return;
@@ -194,6 +198,10 @@ int leaving_time_since_begin(TtrainInfo &info, int x){
 }
 
 void TrainSystem::query_ticket(stationName st, stationName en, date curdate, std::string type){
+    if(curdate < date(2, 1)){
+        std::cout << "0" << std::endl;
+        return;
+    }
     std::vector<sposer> all = stationer_.all_similar(sposer(st, char64()));
     int size = all.size();
     using Tproposal = tuple<int, char64, std::string>;
@@ -249,6 +257,10 @@ int find_first(std::vector<tuple<stationName, Time, int, int, char64, std::strin
 }
 
 void TrainSystem::query_transfer(stationName st, stationName en, date curdate, std::string type){
+    if(curdate < date(2, 1)){
+        std::cout << "0" << std::endl;
+        return;
+    }
     using Tproposal = tuple<int, int, char64, char64, std::string, std::string>;
     using Tchoice = tuple<stationName, Time, int, int, char64, std::string>;
     std::vector<Tchoice> choices;
