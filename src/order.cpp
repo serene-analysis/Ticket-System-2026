@@ -105,11 +105,20 @@ void OrderSystem::query_order(char64 username, AccountSystem& account){
 TorderInfo OrderSystem::back_order(char64 username, int num, AccountSystem& account, TrainSystem& train){
     std::vector<poser> pos = userorder_.all_similar(poser(username, 0));
     int size = pos.size();
+    if(size < num){
+        throw false;
+    }
     return orderMemory_.only(orderPointer(pos[size - num].value, TorderInfo())).value;
 }
 
 void OrderSystem::refund_ticket(char64 username, int num, AccountSystem& account, TrainSystem& train){
     if(!account.stack_.have(poser(username, 0))){
+        std::cout << "-1" << std::endl;
+        return;
+    }
+    try{
+        TorderInfo test = back_order(username, num, account, train);
+    }catch(bool){
         std::cout << "-1" << std::endl;
         return;
     }
