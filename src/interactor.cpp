@@ -299,7 +299,7 @@ void operate(std::vector<std::string> got, AccountSystem &account, TrainSystem &
         char64 username = turn_char64(got[index(got, "-u")]);
         int num = turn_int(got[index(got, "-n")]);
         if(num == -1){
-            num = 0;
+            num = 1;
         }
         order.refund_ticket(username, num, account, train);
     }
@@ -339,4 +339,5 @@ void Interactor::tian(AccountSystem &account, TrainSystem &train, OrderSystem &o
 /*
 [1317420] buy_ticket -u wziISXSDBlGAqy -q true -t 黑龙江省安达市 -f 河北省承德市 -d 07-27 -i IHEARDthatyouask -n 5208
 1843632
+mine:queue
 */
