@@ -2,3 +2,4 @@ requirements.md
 ./build/
 ./TestPoints/
 ./CMakeFiles/
+./testcases/

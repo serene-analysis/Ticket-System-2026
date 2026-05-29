@@ -188,7 +188,7 @@ void operate(std::vector<std::string> got, AccountSystem &account, TrainSystem &
     std::string timestamp_str(fp, sp);
     int timestamp = turn_int(timestamp_str);
     //std::cout << "timestamp = " << timestamp << std::endl;
-    //if(timestamp == 52512){
+    //if(timestamp == 29543){
     //    exit(0);
     //    return;
     //}
@@ -278,7 +278,7 @@ void operate(std::vector<std::string> got, AccountSystem &account, TrainSystem &
         stationName st = turn_stationName(got[index(got, "-s")]),
             en = turn_stationName(got[index(got, "-t")]);
         std::string type = got[index(got, "-p")];
-        train.query_ticket(st, en, startdate, type);
+        train.query_transfer(st, en, startdate, type);
     }
     else if(got[1] == "buy_ticket"){
         char64 username = turn_char64(got[index(got, "-u")]);

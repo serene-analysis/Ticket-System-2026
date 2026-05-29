@@ -276,7 +276,7 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
             maxTickets = min(maxTickets, tickets.v[idx].v[j - 1]);
             std::ostringstream oss;
             oss << all[i].value << ' ' << st << ' ' << start << " -> "
-                << en << ' ' << stations.ch[j] << ' ' << totalPrice << ' ' << maxTickets;
+                << stations.ch[j] << ' ' << arrival << ' ' << totalPrice << ' ' << maxTickets;
             if(type == "cost"){
                 choices.push_back(Tchoice(stations.ch[j], arrival, totalPrice, accumulatedTime, all[i].value, oss.str()));
             }
@@ -311,6 +311,9 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
             int nsize = choices.size();
             while(firstPos < nsize){
                 Tchoice current = choices[firstPos];
+                if(get<0>(current) != stations.ch[j]){
+                    break;
+                }
                 Time arrival = get<1>(current), mem = arrival;
                 int firstKeyword = get<2>(current), secondKeyword = get<3>(current);
                 char64 thirdKeyword = get<4>(current);
@@ -321,14 +324,20 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
                 }
                 arrival.t = dailyLeavingTime;
                 date startDate = arrival.d - leaving_gone_days(info, j);
-                if(!in(saleDate, startDate)){
+                if(startDate > saleDate.r){
+                    firstPos++;
                     continue;
                 }
+                if(startDate < saleDate.l){
+                    arrival.d += saleDate.l - startDate;
+                    startDate = saleDate.l;
+                }
+                //std::cerr << "startDate = " << startDate << ", saleDate.l = " << saleDate.l << ", saleDate.r = " << saleDate.r << std::endl;
                 int idx = startDate - saleDate.l;
                 std::ostringstream oss;
                 int needed_time = pure_distance(info, j, epos), needed_cost = cost(info, j, epos);
                 Time start(arrival), end = start + needed_time;
-                oss << all[i].value << ' ' << st << ' ' << start << " -> "
+                oss << all[i].value << ' ' << stations.ch[j] << ' ' << start << " -> "
                     << en << ' ' << end << ' ' << needed_cost << ' ' << max_tickets(tickets, j, epos, idx);
                 std::string secondOutput = oss.str();
                 if(type == "cost"){
@@ -338,6 +347,7 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
                     firstKeyword += needed_time + (arrival - mem), secondKeyword += needed_cost;
                 }
                 proposals.push_back(Tproposal(firstKeyword, secondKeyword, thirdKeyword, all[i].value, firstOutput, secondOutput));
+                firstPos++;
             }
         }
     }
