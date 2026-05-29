@@ -15,7 +15,7 @@ using std::ios;
 //#define merge_DEBUG
 //#define overall_DEBUG
 
-template<typename Key, typename Value, int MAX_CAP = 64>
+template<typename Key, typename Value, int MAX_CAP = 32>
 class LRUCache {
 private:
     static const int HASH_SIZE = 1024;
@@ -633,7 +633,7 @@ now.out();
 };
 
 
-template<class T, int info_len = 5, int M = 80, int L = 80> // require T ==/<=/>=/</>/!= T
+template<class T, int info_len = 5, int M = 40, int L = 40> // require T ==/<=/>=/</>/!= T
 class BPT {
 private:
     MemoryRiver<T, info_len, M, L> blocks;
