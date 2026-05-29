@@ -739,7 +739,7 @@ std::cout << "np = " << np << ", fa = " << fa << std::endl;
         return;
     }
 
-    void split(int x, int fa){
+    void real_split(int x, int fa, int &bx, int &bfa, bool &go){
         block now = blocks.get_block(x);
 #ifdef DEBUG
 std::cerr << "split : x = " << x << ", fa = " << fa << std::endl;
@@ -803,8 +803,19 @@ std::cout << "M = " << M << ", fa.size = " << blocks.get_info(Ksize, fa) << std:
 #endif
         blocks.insert(get_min(size), size, fa);
         if(full){
-            split(fa, blocks.get_info(Kfa, fa));
+            bx = fa, bfa = blocks.get_info(Kfa, fa), go = true;
         }
+    }
+
+    void split(int x, int fa){
+        int mx = 0, mfa = 0;
+        bool mgo = false;
+        real_split(x, fa, mx, mfa, mgo);
+        while(mgo){
+            mgo = false;
+            real_split(mx, mfa, mx, mfa, mgo);
+        }
+        return;
     }
 
     void insert(const T &value) {
@@ -842,7 +853,7 @@ now.out();
         }
     }
 
-    void merge(int x, int fa/*, int timestamp = 0*/){
+    void real_merge(int x, int fa, int &mx, int &mfa, bool &go){
         //std::cout << "timestamp : " << timestamp << std::endl;
         block now = blocks.get_block(x);
         block pre, nxt;
@@ -925,7 +936,7 @@ std::cerr << "before delete, fa.size = " << blocks.get_info(Ksize, fa) << std::e
                     return;
                 }
                 if(lim){
-                    merge(fa, blocks.get_info(Kfa, fa));
+                    mx = fa, mfa = blocks.get_info(Kfa, fa), go = true;
                 }
             }
         }
@@ -1011,13 +1022,24 @@ std::cerr << "before delete, fa.size = " << blocks.get_info(Ksize, fa) << std::e
                     return;
                 }
                 if(lim){
-                    merge(fa, blocks.get_info(Kfa, fa));
+                    mx = fa, mfa = blocks.get_info(Kfa, fa), go = true;
                 }
             }
         }
         else{
             //std::cout << "direct return" << std::endl;
             return;
+        }
+        return;
+    }
+
+    void merge(int x, int fa){
+        int mx = 0, mfa = 0;
+        bool mgo = false;
+        real_merge(x, fa, mx, mfa, mgo);
+        while(mgo){
+            mgo = false;
+            real_merge(mx, mfa, mx, mfa, mgo);
         }
         return;
     }
