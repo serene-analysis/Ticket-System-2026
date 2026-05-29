@@ -73,7 +73,7 @@ void AccountSystem::logout(char64 username){
     return;
 }
 
-void AccountSystem::query_profile(char64 curname, char64 username){
+void AccountSystem::query_profile(const char64& curname,const char64& username){
     //std::cout << "query_profile, username = " << username << std::endl;
     //std::cout << "stack.number = " << stack_.number << std::endl;
     if(!stack_.have(poser(curname, 0))){

@@ -18,7 +18,6 @@ void OrderSystem::buy_ticket(char64 username, char64 trainId, date curDate, stat
     }
     poser pos = train.released_.only(poser(trainId, 0));
     TtrainInfo info = train.trainMemory_.get(pos.value);
-    mat tickets = train.ticketMemory_.get(pos.value);
     dateRange saleDate = get<7>(info);
     int spos = index(info, st), epos = index(info, en);
     if(spos > epos || spos == -1 || epos == -1){
@@ -32,7 +31,8 @@ void OrderSystem::buy_ticket(char64 username, char64 trainId, date curDate, stat
         return;
     }
     int idx = startDate - saleDate.l;
-    int prices = cost(info, spos, epos), maxNumber = max_tickets(tickets, spos, epos, idx);
+    int100 tickets = train.ticketMemory_.indexed_get(pos.value, idx);
+    int prices = cost(info, spos, epos), maxNumber = max_tickets(tickets, spos, epos);
     Time start(startDate, startTime);
     Time leavingTime = start + leaving_time_since_begin(info, spos), arrivalTime = leavingTime + pure_distance(info, spos, epos);
     TorderInfo mem(timestamp, trainId, startDate, st, leavingTime, en, arrivalTime, prices, number, username);
@@ -76,13 +76,13 @@ void OrderSystem::buy_ticket(char64 username, char64 trainId, date curDate, stat
         //}
         //std::cerr << std::endl;
         for(int i=spos;i<epos;i++){
-            tickets.v[idx].v[i] -= number;
-            if(tickets.v[idx].v[i] < 0){
+            tickets.v[i] -= number;
+            if(tickets.v[i] < 0){
                 //std::cout << "idx = " << idx << ", i = " << i << std::endl;
                 throw false;
             }
         }
-        train.ticketMemory_.set(pos.value, tickets);
+        train.ticketMemory_.indexed_put(pos.value, idx, tickets);
     }
     return;
 }

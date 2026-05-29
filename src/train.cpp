@@ -87,19 +87,19 @@ void TrainSystem::query_train(char64 trainId, date startDate){
     int100 travelTimes = get<5>(info);
     int100 stopOverTimes = get<6>(info);
     char type = get<8>(info);
-    mat tickets = ticketMemory_.get(pos.value);
+    int100 tickets = ticketMemory_.indexed_get(pos.value, idx);
     std::cout << trainId << ' ' << type << std::endl;
     Time now(startDate, startTime);
     int accumulatedPrice = 0;
     std::cout << stations.ch[0] << " xx-xx xx:xx -> "
-        << now << ' ' << accumulatedPrice << ' ' << tickets.v[idx].v[0] << std::endl;
+        << now << ' ' << accumulatedPrice << ' ' << tickets.v[0] << std::endl;
     for(int i=1;i<num-1;i++){
         accumulatedPrice += prices.v[i - 1];
         now += travelTimes.v[i - 1];
         std::cout << stations.ch[i] << ' ';
         std::cout << now << " -> ";
         now += stopOverTimes.v[i - 1];
-        std::cout << now << ' ' << accumulatedPrice << ' ' << tickets.v[idx].v[i] << std::endl;
+        std::cout << now << ' ' << accumulatedPrice << ' ' << tickets.v[i] << std::endl;
     }
     accumulatedPrice += prices.v[num - 2];
     now += travelTimes.v[num - 2];
@@ -140,11 +140,11 @@ int cost(TtrainInfo &info, int st, int en){
     return ret;
 }
 
-int max_tickets(mat tickets, int st, int en, int idx){
+int max_tickets(int100 tickets, int st, int en){
     //std::cout << "max_tickets : st = " << st << ", en = " << en << ", idx = " << idx << std::endl;
     int ret = int_max;
     for(int i=st;i<en;i++){
-        ret = min(ret, tickets.v[idx].v[i]);
+        ret = min(ret, tickets.v[i]);
     }
     return ret;
 }
@@ -209,7 +209,6 @@ void TrainSystem::query_ticket(stationName st, stationName en, date curdate, std
     for(int i=0;i<size;i++){
         poser pos = released_.only(poser(all[i].value, 0));
         TtrainInfo info = trainMemory_.get(pos.value);
-        mat tickets = ticketMemory_.get(pos.value);
         int spos = index(info, st), epos = index(info, en);
         if(epos == -1 || spos > epos){
             continue;
@@ -220,11 +219,12 @@ void TrainSystem::query_ticket(stationName st, stationName en, date curdate, std
             continue;
         }
         int idx = startDate - saleDate.l;
+        int100 tickets = ticketMemory_.indexed_get(pos.value, idx);
         std::ostringstream oss;
         int needed_time = pure_distance(info, spos, epos), needed_cost = cost(info, spos, epos);
         Time start(curdate, leaving_time(info, spos)), end = start + needed_time;
         oss << all[i].value << ' ' << st << ' ' << start << " -> "
-            << en << ' ' << end << ' ' << needed_cost << ' ' << max_tickets(tickets, spos, epos, idx);
+            << en << ' ' << end << ' ' << needed_cost << ' ' << max_tickets(tickets, spos, epos);
         //std::cout << oss.str() << "||| needed_time = " << needed_time << std::endl;
         if(type == "cost"){
             ans.push_back(Tproposal(needed_cost, all[i].value, oss.str()));
@@ -270,7 +270,6 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
     for(int i=0;i<size;i++){
         poser pos = released_.only(poser(all[i].value, 0));
         TtrainInfo info = trainMemory_.get(pos.value);
-        mat tickets = ticketMemory_.get(pos.value);
         int spos = index(info, st);
         int number = get<0>(info);
         if(spos == number - 1){
@@ -287,11 +286,12 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
         int idx = startDate - saleDate.l;
         Time start(curdate, leaving_time(info, spos)), arrival = start;
         int totalPrice = 0, maxTickets = int_max, accumulatedTime = 0;
+        int100 tickets = ticketMemory_.indexed_get(pos.value, idx);
         for(int j=spos+1;j<number;j++){
             arrival += travelTimes.v[j - 1];
             accumulatedTime += travelTimes.v[j - 1];
             totalPrice += prices.v[j - 1];
-            maxTickets = min(maxTickets, tickets.v[idx].v[j - 1]);
+            maxTickets = min(maxTickets, tickets.v[j - 1]);
             std::ostringstream oss;
             oss << all[i].value << ' ' << st << ' ' << start << " -> "
                 << stations.ch[j] << ' ' << arrival << ' ' << totalPrice << ' ' << maxTickets;
@@ -314,7 +314,6 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
     for(int i=0;i<nsize;i++){
         poser pos = released_.only(poser(all[i].value, 0));
         TtrainInfo info = trainMemory_.get(pos.value);
-        mat tickets = ticketMemory_.get(pos.value);
         int epos = index(info, en);
         int number = get<0>(info);
         if(epos == 0){
@@ -356,11 +355,12 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
                 }
                 //std::cerr << "startDate = " << startDate << ", saleDate.l = " << saleDate.l << ", saleDate.r = " << saleDate.r << std::endl;
                 int idx = startDate - saleDate.l;
+                int100 tickets = ticketMemory_.indexed_get(pos.value, idx);
                 std::ostringstream oss;
                 int needed_time = pure_distance(info, j, epos), needed_cost = cost(info, j, epos);
                 Time start(arrival), end = start + needed_time;
                 oss << all[i].value << ' ' << stations.ch[j] << ' ' << start << " -> "
-                    << en << ' ' << end << ' ' << needed_cost << ' ' << max_tickets(tickets, j, epos, idx);
+                    << en << ' ' << end << ' ' << needed_cost << ' ' << max_tickets(tickets, j, epos);
                 std::string secondOutput = oss.str();
                 if(type == "cost"){
                     firstKeyword += needed_cost, secondKeyword += needed_time + (arrival - mem);

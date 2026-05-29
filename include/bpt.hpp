@@ -1495,7 +1495,6 @@ class ARRAY {
 public:
     std::string file_name;
     fstream file;
-    LRUCache<int, tp, 4> cache;
     int element_count;
     static constexpr size_t META_SIZE = sizeof(int);
     static constexpr size_t BUF_SIZE = META_SIZE + sizeof(tp);
@@ -1542,7 +1541,6 @@ public:
             write_meta();
             file.close();
             file.open(file_name, ios::in | ios::out | ios::binary);
-            cache.clear();
             return;
         }
         file.open(file_name, ios::in | ios::out | ios::binary);
@@ -1555,7 +1553,6 @@ public:
         } else {
             read_meta();
         }
-        cache.clear();
         return;
     }
 
@@ -1568,7 +1565,6 @@ public:
         file.seekp(offset, ios::beg);
         file.write(reinterpret_cast<const char*>(&val), sizeof(tp));
         file.flush();
-        cache.put(element_count, val);
         element_count++;
         write_meta();
     }
@@ -1578,20 +1574,50 @@ public:
         file.seekp(offset, ios::beg);
         file.write(reinterpret_cast<const char*>(&val), sizeof(tp));
         file.flush();
-        cache.put(idx, val);
     }
 
     tp get(int idx) {
         tp val;
-        if (cache.get(idx, val)) {
-            return val;
-        }
         size_t offset = get_offset(idx);
         file.seekg(offset, ios::beg);
         file.read(reinterpret_cast<char*>(&val), sizeof(tp));
-        cache.put(idx, val);
         return val;
     }
+
+    int100 indexed_get(int array_idx, int pos){
+        if (array_idx < 0 || array_idx >= element_count){
+            assert(false && "array_idx out of range");
+            return int100{};
+        }
+        if (pos < 0 || pos >= 100){
+            assert(false && "pos out of mat's int100 array");
+            return int100{};
+        }
+        size_t mat_base_offset = get_offset(array_idx);
+        size_t target_offset   = mat_base_offset + (size_t)pos * sizeof(int100);
+        int100 res;
+        file.seekg(target_offset, ios::beg);
+        file.read(reinterpret_cast<char*>(&res), sizeof(int100));
+        return res;
+    }
+    
+    void indexed_put(int array_idx, int pos, const int100& val){
+        if (array_idx < 0 || array_idx >= element_count){
+            assert(false && "array_idx out of range");
+            return;
+        }
+        if (pos < 0 || pos >= 100){
+            assert(false && "pos out of mat's int100 array");
+            return;
+        }
+        size_t mat_base_offset = get_offset(array_idx);
+        size_t target_offset   = mat_base_offset + (size_t)pos * sizeof(int100);
+        file.seekp(target_offset, ios::beg);
+        file.write(reinterpret_cast<const char*>(&val), sizeof(int100));
+        file.flush();
+        return;
+    }
+
     void close() {
         write_meta();
         file.close();

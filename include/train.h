@@ -41,7 +41,7 @@ int pure_distance(TtrainInfo &info, int st, int en);
 
 int cost(TtrainInfo &info, int st, int en);
 
-int max_tickets(mat tickets, int st, int en, int idx);
+int max_tickets(int100 tickets, int st, int en);
 
 int leaving_gone_days(TtrainInfo &info, int x);
 

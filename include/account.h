@@ -22,7 +22,7 @@ struct AccountSystem{
     void add_user(char20, char64, Taccountinfo, bool);
     void login(char64, char30);
     void logout(char64);
-    void query_profile(char64, char64);
+    void query_profile(const char64&, const char64&);
     void modify_profile(char64, char64, Taccountinfo);
     void clean();
     void exit();
