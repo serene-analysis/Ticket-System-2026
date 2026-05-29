@@ -135,7 +135,7 @@ void OrderSystem::refund_ticket(char64 username, int num, AccountSystem& account
     }
     if(timequeue_.have(timePoser(timestamp, 0))){
         queue_.remove(poser(username, timequeue_.only(timePoser(timestamp, 0)).value));
-        timequeue_.remove(timePoser(timestamp, 0));
+        timequeue_.remove(timequeue_.only(timePoser(timestamp, 0)));
         refunded_.insert(timePoser(timestamp, 0));
         std::cout << "0" << std::endl;
         return;
