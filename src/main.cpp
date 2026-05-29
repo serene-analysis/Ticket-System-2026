@@ -10,8 +10,8 @@ Interactor interactor;
 bool mend;
 signed main(){
     //fprintf(stderr, "mem : %d\n", &mbeg-&mend);
-    //freopen("3.in","r",stdin);
-    //freopen("mine.out","w",stdout);
+    freopen("test.in","r",stdin);
+    freopen("mine.out","w",stdout);
     //std::cout << "???" << std::endl;
     interactor.tian(account, train, order);
     return 0;

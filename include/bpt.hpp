@@ -662,16 +662,16 @@ public:
 #ifdef ONLINE_JUDGE
 online = true;
 #endif
+        blocks.block_cache.clear();
         file_name = FN;
-        if(blocks.file.is_open()){
-            blocks.file.close();
+        if(!blocks.file.is_open()){
+            blocks.file.open(file_name, ios::in | ios::out | ios::binary);
         }
-        blocks.file.open(file_name, ios::in | ios::out | ios::binary);
         if(!blocks.file.is_open() || forced/* || !online*/){
             if(blocks.file.is_open()){
                 blocks.file.close();
             }
-            blocks.file.open(file_name, ios::out | ios::binary);
+            blocks.file.open(file_name, ios::out | ios::binary | ios::trunc);
             blocks.file.close();
             blocks.file.open(file_name, ios::in | ios::out | ios::binary);
             blocks.initialise(file_name, 1);
@@ -682,6 +682,7 @@ online = true;
             rt = 1, size = 2, number = 0;
         }
         else{
+            blocks.file.seekg(0, ios::beg);
             blocks.file.read(reinterpret_cast<char*>(&rt), sizeof(int));
             blocks.file.read(reinterpret_cast<char*>(&size), sizeof(int));
             blocks.file.read(reinterpret_cast<char*>(&number), sizeof(int));
@@ -1352,6 +1353,7 @@ std::cout << "find, visited, nxt = " << x << std::endl;
 std::cout << "\n\n\nfind begin\n\n\n" << std::endl;
 std::cout << "value = {" << value.key << "," << value.value << "}" << std::endl;
 #endif
+        //std::cout << "have, rt = " << rt << ", size = " << size << ", number = " << number << std::endl;
         int x = rt;
         while(true){
             block now = blocks.get_block(x);
@@ -1391,6 +1393,7 @@ std::cout << "value = " << blocks.get_value(0, x).value << std::endl;
 #endif
             block now = blocks.get_block(x);
             int size = now.size;
+            //std::cout << "have, now_x = " << x << ", size = " << size << std::endl;
             if(size && smaller(now.val[size - 1], value)){
                 x = now.next;
 #ifdef DEBUG

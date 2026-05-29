@@ -37,6 +37,7 @@ void AccountSystem::add_user(char20 curname, char64 username, Taccountinfo info,
 }
 void AccountSystem::login(char64 username, char30 password){
     //std::cout << "login, username = " << username << std::endl;
+    //std::cout << "stack.number = " << stack_.number << std::endl;
     if(!account_.have(poser(username, 0))){
         //std::cout << "account dont have username" << std::endl;
         std::cout << "-1" << std::endl;
@@ -73,11 +74,14 @@ void AccountSystem::logout(char64 username){
 }
 
 void AccountSystem::query_profile(char64 curname, char64 username){
+    //std::cout << "query_profile, username = " << username << std::endl;
+    //std::cout << "stack.number = " << stack_.number << std::endl;
     if(!stack_.have(poser(curname, 0))){
         //std::cout << "stack dont have curname" << std::endl;
         std::cout << "-1" << std::endl;
         return;
     }
+    //std::cout << "?" << std::endl;
     if(!account_.have(poser(username, 0))){
         //std::cout << "account dont have username" << std::endl;
         std::cout << "-1" << std::endl;
