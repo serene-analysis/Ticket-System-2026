@@ -13,7 +13,7 @@ struct TrainSystem{
     BPT<Ttrain> hidden_, released_;
     BPT<TstationerInfo> stationer_;
     ARRAY<mat> ticketMemory_;
-    BPT<TtrainMemory> trainMemory_;
+    ARRAY<TtrainInfo> trainMemory_;
     TrainSystem(){
         hidden_.initialise("hidden.data");
         released_.initialise("released.data");

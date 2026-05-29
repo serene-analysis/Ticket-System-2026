@@ -10,14 +10,14 @@ void TrainSystem::add_train(char64 trainId, TtrainInfo info, mat tickets){
         std::cout << "-1" << std::endl;
         return;
     }
-    int cou = trainMemory_.number;
+    int cou = trainMemory_.element_count;
     /*if(cou == 1){
         std::cerr << "cou = " << cou << std::endl;
         std::cerr << "trainId = " << trainId << std::endl;
         std::cerr << "startTime = " << get<4>(info) << std::endl;
     }*/
     hidden_.insert(poser(trainId, cou));
-    trainMemory_.insert(pointer(cou, info));
+    trainMemory_.push_back(info);
     ticketMemory_.push_back(tickets);
     std::cout << '0' << std::endl;
     return;
@@ -42,7 +42,7 @@ void TrainSystem::release_train(char64 trainId){
     poser pos = hidden_.only(poser(trainId, 0));
     //std::cout << "pos.value = " << pos.value << std::endl;
     hidden_.remove(pos), released_.insert(pos);
-    TtrainInfo info = trainMemory_.only(pointer(pos.value, TtrainInfo())).value;
+    TtrainInfo info = trainMemory_.get(pos.value);
     int num = get<0>(info);
     stationNames stations = get<1>(info);
     for(int i=0;i<num;i++){
@@ -66,7 +66,7 @@ void TrainSystem::query_train(char64 trainId, date startDate){
     else{
         pos = released_.only(poser(trainId, 0));
     }
-    TtrainInfo info = trainMemory_.only(pointer(pos.value, TtrainInfo())).value;
+    TtrainInfo info = trainMemory_.get(pos.value);
     dateRange saleDate = get<7>(info);
     if(!in(saleDate, startDate)){
         std::cout << "-1" << std::endl;
@@ -197,8 +197,7 @@ void TrainSystem::query_ticket(stationName st, stationName en, date curdate, std
     std::vector<Tproposal> ans;
     for(int i=0;i<size;i++){
         poser pos = released_.only(poser(all[i].value, 0));
-        pointer ptr = trainMemory_.only(pointer(pos.value, TtrainInfo()));
-        TtrainInfo info = ptr.value;
+        TtrainInfo info = trainMemory_.get(pos.value);
         mat tickets = ticketMemory_.get(pos.value);
         int spos = index(info, st), epos = index(info, en);
         if(epos == -1 || spos > epos){
@@ -255,8 +254,7 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
     int size = all.size();
     for(int i=0;i<size;i++){
         poser pos = released_.only(poser(all[i].value, 0));
-        pointer ptr = trainMemory_.only(pointer(pos.value, TtrainInfo()));
-        TtrainInfo info = ptr.value;
+        TtrainInfo info = trainMemory_.get(pos.value);
         mat tickets = ticketMemory_.get(pos.value);
         int spos = index(info, st);
         date startDate = curdate - leaving_gone_days(info, spos);
@@ -296,8 +294,7 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
     int nsize = all.size();
     for(int i=0;i<nsize;i++){
         poser pos = released_.only(poser(all[i].value, 0));
-        pointer ptr = trainMemory_.only(pointer(pos.value, TtrainInfo()));
-        TtrainInfo info = ptr.value;
+        TtrainInfo info = trainMemory_.get(pos.value);
         mat tickets = ticketMemory_.get(pos.value);
         int epos = index(info, en);
         int number = get<0>(info);

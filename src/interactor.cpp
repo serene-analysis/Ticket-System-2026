@@ -202,7 +202,7 @@ void operate(std::vector<std::string> got, AccountSystem &account, TrainSystem &
         get<0>(nv) = turn_char30(got[index(got, "-p")]);
         get<1>(nv) = turn_personName(got[index(got, "-n")]);
         get<2>(nv) = turn_char30(got[index(got, "-m")]);
-        if(account.accountMemory_.number == 0){
+        if(account.accountMemory_.element_count == 0){
             get<3>(nv) = 10;
             fir = true;
         }

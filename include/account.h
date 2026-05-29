@@ -8,7 +8,7 @@ using TaccountMemory = int_info<Taccountinfo>;
 //password, name, mailAddr, privilege
 struct AccountSystem{
     BPT<Taccount> account_, stack_;
-    BPT<TaccountMemory> accountMemory_;
+    ARRAY<Taccountinfo> accountMemory_;
     AccountSystem(){
         account_.initialise("account.data");
         stack_.initialise("stack.data");

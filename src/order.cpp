@@ -17,8 +17,7 @@ void OrderSystem::buy_ticket(char64 username, char64 trainId, date curDate, stat
         return;
     }
     poser pos = train.released_.only(poser(trainId, 0));
-    trainPointer ptr = train.trainMemory_.only(trainPointer(pos.value, TtrainInfo()));
-    TtrainInfo info = ptr.value;
+    TtrainInfo info = train.trainMemory_.get(pos.value);
     mat tickets = train.ticketMemory_.get(pos.value);
     dateRange saleDate = get<7>(info);
     int spos = index(info, st), epos = index(info, en);
@@ -132,7 +131,7 @@ void OrderSystem::refund_ticket(char64 username, int num, AccountSystem& account
     int prices = get<7>(orderInfo), number = get<8>(orderInfo);
 
     mat tickets = train.ticketMemory_.get(pos.value);
-    TtrainInfo trainInfo = train.trainMemory_.only(trainPointer(pos.value, TtrainInfo())).value;
+    TtrainInfo trainInfo = train.trainMemory_.get(pos.value);
     int spos = index(trainInfo, stName), epos = index(trainInfo, enName);
     dateRange saleDate = get<7>(trainInfo);
     int idx = startDate - saleDate.l;
