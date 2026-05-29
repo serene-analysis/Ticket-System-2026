@@ -286,7 +286,6 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
     using Tproposal = tuple<int, int, char64, char64, std::string, std::string>;
     using Tchoice = tuple<stationName, Time, int, int, char64, std::string>;
     std::vector<Tchoice> choices;
-    std::vector<Tproposal> proposals;
     std::vector<sposer> all = stationer_.all_similar(sposer(st, char64()));
     int size = all.size();
     for(int i=0;i<size;i++){
@@ -333,6 +332,8 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
     //std::cout << "choices.size = " << choices.size() << std::endl;
     all = stationer_.all_similar(sposer(en, char64()));
     int nsize = all.size();
+    Tproposal ans;
+    bool haveAns = false;
     for(int i=0;i<nsize;i++){
         poser pos = released_.only(poser(all[i].value, 0));
         TtrainInfo info = trainMemory_.get(pos.value);
@@ -390,20 +391,26 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
                 else{
                     firstKeyword += needed_time + (arrival - mem), secondKeyword += needed_cost;
                 }
-                proposals.push_back(Tproposal(firstKeyword, secondKeyword, thirdKeyword, all[i].value, firstOutput, secondOutput));
                 firstPos++;
+                if(thirdKeyword != all[i].value){
+                    Tproposal curAns(firstKeyword, secondKeyword, thirdKeyword, all[i].value, firstOutput, secondOutput);
+                    if(!haveAns){
+                        haveAns = true;
+                        ans = curAns;
+                    }
+                    else{
+                        ans = (ans < curAns ? curAns : ans);
+                    }
+                }
             }
         }
     }
-    sort(proposals);
-    int osize = proposals.size();
-    for(int i=0;i<osize;i++){
-        if(get<2>(proposals[i]) != get<3>(proposals[i])){
-            std::cout << get<4>(proposals[i]) << std::endl << get<5>(proposals[i]) << std::endl;
-            return;
-        }
+    if(haveAns){
+        std::cout << get<4>(ans) << std::endl << get<5>(ans) << std::endl;
     }
-    std::cout << '0' << std::endl;
+    else{
+        std::cout << '0' << std::endl;
+    }
     return;
 }
 

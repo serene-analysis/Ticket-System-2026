@@ -633,7 +633,7 @@ now.out();
 };
 
 
-template<class T, int info_len = 5, int M = 40, int L = 40> // require T ==/<=/>=/</>/!= T
+template<class T, int info_len = 5, int M = 30, int L = 30> // require T ==/<=/>=/</>/!= T
 class BPT {
 private:
     MemoryRiver<T, info_len, M, L> blocks;
