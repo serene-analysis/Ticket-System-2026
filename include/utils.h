@@ -5,7 +5,6 @@
 #include <cassert>
 #include <cstdio>
 #include <string>
-#include <vector>
 
 const int int_max = 2147483647;
 

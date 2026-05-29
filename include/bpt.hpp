@@ -1,6 +1,6 @@
 #pragma once
 #include "utils.h"
-#include <vector>
+#include "vector.hpp"
 #include <iostream>
 #include <fstream>
 #include <cassert>
@@ -1159,7 +1159,7 @@ std::cout << "find, visited, nxt = " << x << std::endl;
         return;
     }
 
-    std::vector<T> all() {
+    sjtu::vector<T> all() {
         int x = rt;
         while(true){
             block now = blocks.get_block(x);
@@ -1170,7 +1170,7 @@ std::cout << "find, visited, nxt = " << x << std::endl;
                 x = now.son[0];
             }
         }
-        std::vector<T> ret;
+        sjtu::vector<T> ret;
         while(x){
             block now = blocks.get_block(x);
             int size = now.size;
@@ -1182,7 +1182,7 @@ std::cout << "find, visited, nxt = " << x << std::endl;
         return ret;
     }
 
-    std::vector<T> all_similar(const T &value) {
+    sjtu::vector<T> all_similar(const T &value) {
 #ifdef DEBUG
 std::cout << "\n\n\nfind begin\n\n\n" << std::endl;
 std::cout << "value = {" << value.key << "," << value.value << "}" << std::endl;
@@ -1219,7 +1219,7 @@ if(now.size)std::cout << "dw, max value = " << now.val[now.size - 1].key << ", n
 #ifdef DEBUG
 std::cout << "find start" << std::endl;
 #endif
-        std::vector<T> ret;
+        sjtu::vector<T> ret;
         while(x){
 #ifdef DEBUG
 std::cout << "find, x = " << x << std::endl;

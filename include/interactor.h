@@ -3,7 +3,6 @@
 #include "account.h"
 #include "train.h"
 #include "order.h"
-#include <vector>
 
 struct Interactor{
     bool end_;
