@@ -1,8 +1,8 @@
 #include "interactor.h"
 #include <cassert>
 
-std::vector<std::string> Interactor::readLine() {
-    std::vector<std::string> ret;
+sjtu::vector<std::string> Interactor::readLine() {
+    sjtu::vector<std::string> ret;
     std::string got;
     while (true) {
         int first = getchar();
@@ -157,7 +157,7 @@ mat mat_fill(int x){
     return ret;
 }
 
-int index(std::vector<std::string> strs, std::string goal){
+int index(sjtu::vector<std::string> strs, std::string goal){
     int size = strs.size();
     for(int i=0;i<size-1;i++){
         if(strs[i] == goal){
@@ -180,7 +180,7 @@ int index(std::vector<std::string> strs, std::string goal){
 
 #include <cstdlib>
 
-void operate(std::vector<std::string> got, AccountSystem &account, TrainSystem &train, OrderSystem &order){
+void operate(sjtu::vector<std::string> got, AccountSystem &account, TrainSystem &train, OrderSystem &order){
     got.push_back(std::string());
     std::cout << got[0] << ' ';
     auto fp = got[0].begin(), sp = got[0].end();

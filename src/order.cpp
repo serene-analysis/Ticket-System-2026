@@ -92,7 +92,7 @@ void OrderSystem::query_order(char64 username, AccountSystem& account){
         std::cout << "-1" << std::endl;
         return;
     }
-    std::vector<poser> pos = userorder_.all_similar(poser(username, -1));
+    sjtu::vector<poser> pos = userorder_.all_similar(poser(username, -1));
     int size = pos.size();
     std::cout << size << std::endl;
     for(int i=size-1;i>=0;i--){
@@ -118,7 +118,7 @@ void OrderSystem::query_order(char64 username, AccountSystem& account){
 }
 
 TorderInfo OrderSystem::back_order(char64 username, int num, AccountSystem& account, TrainSystem& train){
-    std::vector<poser> pos = userorder_.all_similar(poser(username, -1));
+    sjtu::vector<poser> pos = userorder_.all_similar(poser(username, -1));
     int size = pos.size();
     if(size < num){
         throw false;
@@ -177,7 +177,7 @@ void OrderSystem::refund_ticket(char64 username, int num, AccountSystem& account
     }
 
     //std::cout << "4" << std::endl;
-    std::vector<Torder> queue = queue_.all_similar(Torder(trainId, -1));
+    sjtu::vector<Torder> queue = queue_.all_similar(Torder(trainId, -1));
     int size = queue.size();
     for(int i=0;i<size;i++){
         Torder now = queue[i];

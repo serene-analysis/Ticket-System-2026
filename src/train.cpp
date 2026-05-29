@@ -202,7 +202,7 @@ void TrainSystem::query_ticket(stationName st, stationName en, date curdate, std
         std::cout << "0" << std::endl;
         return;
     }
-    std::vector<sposer> all = stationer_.all_similar(sposer(st, char64())),
+    sjtu::vector<sposer> all = stationer_.all_similar(sposer(st, char64())),
         eall = stationer_.all_similar(sposer(en, char64())), both;
     int size = all.size(), esize = eall.size(), np = 0;
     //std::cout << "size = " << size << std::endl;
@@ -224,7 +224,7 @@ void TrainSystem::query_ticket(stationName st, stationName en, date curdate, std
     all = both, size = all.size();
     //std::cout << "ok?" << std::endl;
     using Tproposal = tuple<int, char64, std::string>;
-    std::vector<Tproposal> ans;
+    sjtu::vector<Tproposal> ans;
     for(int i=0;i<size;i++){
         poser pos = released_.only(poser(all[i].value, 0));
         TtrainInfo info = trainMemory_.get(pos.value);
@@ -265,7 +265,7 @@ void TrainSystem::query_ticket(stationName st, stationName en, date curdate, std
 }
 
 //template<typename tp, typename oth>
-int find_first(std::vector<tuple<stationName, Time, int, int, char64, std::string>> got, stationName gave){
+int find_first(sjtu::vector<tuple<stationName, Time, int, int, char64, std::string>> got, stationName gave){
     int ef_lef = 0, ef_rig = got.size() - 1, ef_ans = -1;
     while(ef_lef <= ef_rig){
         int ef_mid = (ef_lef + ef_rig) >> 1;
@@ -285,8 +285,8 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
     }
     using Tproposal = tuple<int, int, char64, char64, std::string, std::string>;
     using Tchoice = tuple<stationName, Time, int, int, char64, std::string>;
-    std::vector<Tchoice> choices;
-    std::vector<sposer> all = stationer_.all_similar(sposer(st, char64()));
+    sjtu::vector<Tchoice> choices;
+    sjtu::vector<sposer> all = stationer_.all_similar(sposer(st, char64()));
     int size = all.size();
     for(int i=0;i<size;i++){
         poser pos = released_.only(poser(all[i].value, 0));

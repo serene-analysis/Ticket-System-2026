@@ -1,5 +1,6 @@
 #pragma once
 
+#include "vector.hpp"
 #include <iostream>
 #include <sstream>
 #include <cassert>
@@ -948,12 +949,12 @@ inline tp min(tp a, tp b){
 }
 
 template<typename tp>
-void sort(std::vector<tp> &gave){
+void sort(sjtu::vector<tp> &gave){
     if(gave.size() <= 1){
         return;
     }
     int l = 0, r = gave.size() - 1, mid = (l + r) >> 1;
-    std::vector<tp> lef, rig;
+    sjtu::vector<tp> lef, rig;
     for(int i=l;i<=mid;i++){
         lef.push_back(gave[i]);
     }

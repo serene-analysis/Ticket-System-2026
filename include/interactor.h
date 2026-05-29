@@ -1,5 +1,6 @@
 #pragma once
 
+#include "vector.hpp"
 #include "account.h"
 #include "train.h"
 #include "order.h"
@@ -11,6 +12,6 @@ struct Interactor{
         return;
     }
     ~Interactor() = default;
-    std::vector<std::string> readLine();
+    sjtu::vector<std::string> readLine();
     void tian(AccountSystem &, TrainSystem &, OrderSystem &);
 };
