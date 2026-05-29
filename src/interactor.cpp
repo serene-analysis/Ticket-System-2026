@@ -335,3 +335,8 @@ void Interactor::tian(AccountSystem &account, TrainSystem &train, OrderSystem &o
     }
     return;
 }
+
+/*
+[1317420] buy_ticket -u wziISXSDBlGAqy -q true -t 黑龙江省安达市 -f 河北省承德市 -d 07-27 -i IHEARDthatyouask -n 5208
+1843632
+*/

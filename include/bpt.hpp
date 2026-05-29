@@ -15,11 +15,10 @@ using std::ios;
 //#define merge_DEBUG
 //#define overall_DEBUG
 
-template<typename Key, typename Value>
+template<typename Key, typename Value, int MAX_CAP = 256>
 class LRUCache {
 private:
     static const int HASH_SIZE = 1024;
-    static const int MAX_CAP = 4;
 
     struct Node {
         Key key;
@@ -1458,7 +1457,7 @@ class ARRAY {
 public:
     std::string file_name;
     fstream file;
-    LRUCache<int, tp> cache;
+    LRUCache<int, tp, 4> cache;
     int element_count;
     static constexpr size_t META_SIZE = sizeof(int);
     static constexpr size_t BUF_SIZE = META_SIZE + sizeof(tp);
