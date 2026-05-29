@@ -15,7 +15,7 @@ using std::ios;
 //#define merge_DEBUG
 //#define overall_DEBUG
 
-template<typename Key, typename Value, int MAX_CAP = 256>
+template<typename Key, typename Value, int MAX_CAP = 32>
 class LRUCache {
 private:
     static const int HASH_SIZE = 1024;
