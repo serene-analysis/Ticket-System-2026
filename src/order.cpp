@@ -21,6 +21,10 @@ void OrderSystem::buy_ticket(char64 username, char64 trainId, date curDate, stat
     mat tickets = train.ticketMemory_.get(pos.value);
     dateRange saleDate = get<7>(info);
     int spos = index(info, st), epos = index(info, en);
+    if(spos > epos || spos == -1 || epos == -1){
+        std::cout << "-1" << std::endl;
+        return;
+    }
     dailyTime startTime = get<4>(info);
     date startDate = curDate - leaving_gone_days(info, spos);
     if(!in(saleDate, startDate)){
@@ -48,6 +52,8 @@ void OrderSystem::buy_ticket(char64 username, char64 trainId, date curDate, stat
         timequeue_.insert(timePoser(timestamp, cou));
     }
     else{
+        //std::cout << "number = " << number << ", prices = " << prices << std::endl;
+        //std::cout << "spos = " << spos << ", epos = " << epos << std::endl;
         std::cout << 1ll * number * prices << std::endl;
         //std::cout << "idx = " << idx << ", spos = " << spos << ", epos = " << epos << std::endl;
         //std::cout << "ok" << std::endl;
