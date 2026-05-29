@@ -148,6 +148,7 @@ int max_tickets(mat tickets, int st, int en, int idx){
 int leaving_gone_days(TtrainInfo &info, int x){
     int100 &travelTimes = get<5>(info), &stopTimes = get<6>(info);
     if(x == get<0>(info) - 1){
+        std::cout << "leaving_gone_days throw" << std::endl;
         throw false;
     }
     dailyTime &start = get<4>(info), now = start;
@@ -164,6 +165,7 @@ int leaving_gone_days(TtrainInfo &info, int x){
 dailyTime leaving_time(TtrainInfo &info, int x){
     int100 &travelTimes = get<5>(info), &stopTimes = get<6>(info);
     if(x == get<0>(info) - 1){
+        std::cout << "leaving_time throw" << std::endl;
         throw false;
     }
     dailyTime &start = get<4>(info), now = start;
@@ -179,6 +181,7 @@ dailyTime leaving_time(TtrainInfo &info, int x){
 int leaving_time_since_begin(TtrainInfo &info, int x){
     int100 &travelTimes = get<5>(info), &stopTimes = get<6>(info);
     if(x == get<0>(info) - 1){
+        std::cout << "leaving_time_since_begin throw" << std::endl;
         throw false;
     }
     int ret = 0;
@@ -257,8 +260,11 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
         TtrainInfo info = trainMemory_.get(pos.value);
         mat tickets = ticketMemory_.get(pos.value);
         int spos = index(info, st);
-        date startDate = curdate - leaving_gone_days(info, spos);
         int number = get<0>(info);
+        if(spos == number - 1){
+            continue;
+        }
+        date startDate = curdate - leaving_gone_days(info, spos);
         stationNames &stations = get<1>(info);
         int100 &prices = get<3>(info);
         int100 &travelTimes = get<5>(info), &stopOverTimes = get<6>(info);
@@ -290,6 +296,7 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
         }
     }
     sort(choices);
+    //std::cout << "choices.size = " << choices.size() << std::endl;
     all = stationer_.all_similar(sposer(en, char64()));
     int nsize = all.size();
     for(int i=0;i<nsize;i++){
@@ -298,6 +305,9 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
         mat tickets = ticketMemory_.get(pos.value);
         int epos = index(info, en);
         int number = get<0>(info);
+        if(epos == 0){
+            continue;
+        }
         stationNames &stations = get<1>(info);
         int100 &prices = get<3>(info);
         int100 &travelTimes = get<5>(info), &stopOverTimes = get<6>(info);
