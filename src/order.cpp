@@ -42,9 +42,9 @@ void OrderSystem::buy_ticket(char64 username, char64 trainId, date curDate, stat
             return;
         }
     }
-    int cou = orderMemory_.number;
+    int cou = orderMemory_.element_count;
     userorder_.insert(poser(username, cou));
-    orderMemory_.insert(orderPointer(cou, mem));
+    orderMemory_.push_back(mem);
     if(maxNumber < number){
         std::cout << "queue" << std::endl;
         /*if(timestamp == 1317420){
@@ -97,7 +97,7 @@ void OrderSystem::query_order(char64 username, AccountSystem& account){
     std::cout << size << std::endl;
     for(int i=size-1;i>=0;i--){
         int npos = pos[i].value;
-        TorderInfo info = orderMemory_.only(orderPointer(npos, TorderInfo())).value;
+        TorderInfo info = orderMemory_.get(npos);
         int timestamp = get<0>(info);
         char64 trainId = get<1>(info);
         Time st = get<4>(info), en = get<6>(info);
@@ -123,7 +123,7 @@ TorderInfo OrderSystem::back_order(char64 username, int num, AccountSystem& acco
     if(size < num){
         throw false;
     }
-    return orderMemory_.only(orderPointer(pos[size - num].value, TorderInfo())).value;
+    return orderMemory_.get(pos[size - num].value);
 }
 
 void OrderSystem::refund_ticket(char64 username, int num, AccountSystem& account, TrainSystem& train){
@@ -181,7 +181,7 @@ void OrderSystem::refund_ticket(char64 username, int num, AccountSystem& account
     int size = queue.size();
     for(int i=0;i<size;i++){
         Torder now = queue[i];
-        TorderInfo alternative = orderMemory_.only(orderPointer(now.value, TorderInfo())).value;
+        TorderInfo alternative = orderMemory_.get(now.value);
         int nowTimestamp = get<0>(alternative);
         char64 nowUsername = get<1>(alternative);
         stationName nowStName = get<3>(alternative), nowEnName = get<5>(alternative);

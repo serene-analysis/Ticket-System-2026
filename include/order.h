@@ -12,7 +12,7 @@ using TorderMemory = int_info<TorderInfo>;
 struct OrderSystem{
     BPT<Torder> userorder_, queue_;
     BPT<TtimeOrder> timequeue_, refunded_;
-    BPT<TorderMemory> orderMemory_;
+    ARRAY<TorderInfo> orderMemory_;
     OrderSystem(){
         userorder_.initialise("userorder.data");
         queue_.initialise("queue.data");
