@@ -1297,8 +1297,8 @@ std::cout << "find, visited, nxt = " << x << std::endl;
 #endif
             }
         }
-        assert(false);
         std::cout << "???" << std::endl;
+        std::cout << "value.key = " << value.key << std::endl;
         x = rt;
         while(true){
             std::cout << "x = " << x << std::endl;
@@ -1338,6 +1338,44 @@ std::cout << "find, skipped, nxt = " << x << std::endl;
                     if(similar(now.val[i],value)){
                         return now.val[i];
                     }
+                }
+                x = now.next;
+std::cout << "find, visited, nxt = " << x << std::endl;
+            }
+        }
+        //assert(false);
+        std::cout << "??????" << std::endl;
+        std::cout << "value.key = " << value.key << std::endl;
+        x = rt;
+        while(true){
+            std::cout << "x = " << x << std::endl;
+            block now = blocks.get_block(x);
+            if(now.type == Kleaf){
+                break;
+            }
+            else{
+                x = now.son[0];
+            }
+        }
+        std::cout << "final, x = " << x << std::endl;
+        while(x){
+std::cout << "find, x = " << x << std::endl;
+std::cout << "key = " << blocks.get_value(0, x).key << std::endl;
+            block now = blocks.get_block(x);
+            int size = now.size;
+            if(size && smaller(now.val[size - 1], value)){
+                x = now.next;
+std::cout << "find, skipped, nxt = " << x << std::endl;
+            }
+            else if(size && smaller(value, now.val[0])){
+                break;
+            }
+            else{
+                for(int i=0;i<size;i++){
+                    if(similar(now.val[i],value)){
+                        return now.val[i];
+                    }
+                    else std::cout << "cur = " << now.val[i].key << std::endl;
                 }
                 x = now.next;
 std::cout << "find, visited, nxt = " << x << std::endl;

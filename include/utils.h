@@ -965,10 +965,10 @@ void sort(std::vector<tp> &gave){
     int lp = 0, rp = 0, np = 0;
     //std::cout << "lef.size() = " << lef.size() << ", rig.size() = " << rig.size() << std::endl;
     while(lp != lef.size() || rp != rig.size()){
-        if(lp == lef.size() ){
+        if(lp == lef.size()){
             gave[np++] = rig[rp++];
         }
-        else if(rp == rig.size() ){
+        else if(rp == rig.size()){
             gave[np++] = lef[lp++];
         }
         else{

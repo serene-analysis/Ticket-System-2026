@@ -35,8 +35,7 @@ void OrderSystem::buy_ticket(char64 username, char64 trainId, date curDate, stat
     int prices = cost(info, spos, epos), maxNumber = max_tickets(tickets, spos, epos, idx);
     Time start(startDate, startTime);
     Time leavingTime = start + leaving_time_since_begin(info, spos), arrivalTime = leavingTime + pure_distance(info, spos, epos);
-    TorderInfo mem(timestamp, trainId, startDate, st, leavingTime,
-        en, arrivalTime, prices, number, username);
+    TorderInfo mem(timestamp, trainId, startDate, st, leavingTime, en, arrivalTime, prices, number, username);
     if(maxNumber < number){
         if(type != "true" || number > get<2>(info)){
             std::cout << "-1" << std::endl;
@@ -48,6 +47,17 @@ void OrderSystem::buy_ticket(char64 username, char64 trainId, date curDate, stat
     orderMemory_.insert(orderPointer(cou, mem));
     if(maxNumber < number){
         std::cout << "queue" << std::endl;
+        /*if(timestamp == 1317420){
+            std::cout << "idx = " << idx << ", spos = " << spos << ", epos = " << epos << std::endl;
+            std::cout << "buy : trainId = " << trainId << ", idx = " << idx << ", spos = " << spos << ", epos = " << epos
+                << ", number = " << number << ",prices = " << prices << ", maxNumber = " << maxNumber << std::endl;
+            std::cout << "original : " << std::endl;
+            int size = get<0>(info);
+            for(int i=0;i<size;i++){
+                std::cout << tickets.v[idx].v[i] << " ";
+            }
+            std::cout << std::endl;
+        }*/
         queue_.insert(poser(trainId, cou));
         timequeue_.insert(timePoser(timestamp, cou));
     }
@@ -82,7 +92,7 @@ void OrderSystem::query_order(char64 username, AccountSystem& account){
         std::cout << "-1" << std::endl;
         return;
     }
-    std::vector<poser> pos = userorder_.all_similar(poser(username, 0));
+    std::vector<poser> pos = userorder_.all_similar(poser(username, -1));
     int size = pos.size();
     std::cout << size << std::endl;
     for(int i=size-1;i>=0;i--){
@@ -108,7 +118,7 @@ void OrderSystem::query_order(char64 username, AccountSystem& account){
 }
 
 TorderInfo OrderSystem::back_order(char64 username, int num, AccountSystem& account, TrainSystem& train){
-    std::vector<poser> pos = userorder_.all_similar(poser(username, 0));
+    std::vector<poser> pos = userorder_.all_similar(poser(username, -1));
     int size = pos.size();
     if(size < num){
         throw false;
@@ -117,6 +127,9 @@ TorderInfo OrderSystem::back_order(char64 username, int num, AccountSystem& acco
 }
 
 void OrderSystem::refund_ticket(char64 username, int num, AccountSystem& account, TrainSystem& train){
+    if(queue_.number != timequeue_.number){
+        throw false;
+    }
     if(!account.stack_.have(poser(username, 0))){
         std::cout << "-1" << std::endl;
         return;
@@ -127,6 +140,7 @@ void OrderSystem::refund_ticket(char64 username, int num, AccountSystem& account
         std::cout << "-1" << std::endl;
         return;
     }
+    //std::cout << "1" << std::endl;
     TorderInfo orderInfo = back_order(username, num, account, train);
     int timestamp = get<0>(orderInfo);
     if(refunded_.have(timePoser(timestamp, 0))){
@@ -134,12 +148,17 @@ void OrderSystem::refund_ticket(char64 username, int num, AccountSystem& account
         return;
     }
     if(timequeue_.have(timePoser(timestamp, 0))){
-        queue_.remove(poser(username, timequeue_.only(timePoser(timestamp, 0)).value));
+        //std::cout << "timestamp = " << timestamp << std::endl;
+        //std::cout << "removed cou = " << timequeue_.only(timePoser(timestamp, 0)).value << std::endl;
+        //std::cout << "queue_.number = " << queue_.number << std::endl;
+        queue_.remove(poser(get<1>(orderInfo), timequeue_.only(timePoser(timestamp, 0)).value));
+        //std::cout << "removed, queue_.number = " << queue_.number << std::endl;
         timequeue_.remove(timequeue_.only(timePoser(timestamp, 0)));
         refunded_.insert(timePoser(timestamp, 0));
         std::cout << "0" << std::endl;
         return;
     }
+    //std::cout << "2" << std::endl;
     char64 trainId = get<1>(orderInfo);
     poser pos = train.released_.only(poser(trainId, 0));
     date startDate = get<2>(orderInfo);
@@ -147,6 +166,7 @@ void OrderSystem::refund_ticket(char64 username, int num, AccountSystem& account
     stationName stName = get<3>(orderInfo), enName = get<5>(orderInfo);
     int prices = get<7>(orderInfo), number = get<8>(orderInfo);
 
+    //std::cout << "3" << std::endl;
     mat tickets = train.ticketMemory_.get(pos.value);
     TtrainInfo trainInfo = train.trainMemory_.get(pos.value);
     int spos = index(trainInfo, stName), epos = index(trainInfo, enName);
@@ -156,12 +176,14 @@ void OrderSystem::refund_ticket(char64 username, int num, AccountSystem& account
         tickets.v[idx].v[i] += number;
     }
 
-    std::vector<Torder> queue = queue_.all_similar(Torder(trainId, 0));
+    //std::cout << "4" << std::endl;
+    std::vector<Torder> queue = queue_.all_similar(Torder(trainId, -1));
     int size = queue.size();
     for(int i=0;i<size;i++){
         Torder now = queue[i];
         TorderInfo alternative = orderMemory_.only(orderPointer(now.value, TorderInfo())).value;
         int nowTimestamp = get<0>(alternative);
+        char64 nowUsername = get<1>(alternative);
         stationName nowStName = get<3>(alternative), nowEnName = get<5>(alternative);
         int nowNumber = get<8>(alternative);
         int nspos = index(trainInfo, nowStName), nepos = index(trainInfo, nowEnName);

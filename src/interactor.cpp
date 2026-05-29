@@ -188,7 +188,7 @@ void operate(std::vector<std::string> got, AccountSystem &account, TrainSystem &
     std::string timestamp_str(fp, sp);
     int timestamp = turn_int(timestamp_str);
     //std::cout << "timestamp = " << timestamp << std::endl;
-    //if(timestamp == 43042){
+    //if(timestamp == 837498){
     //    exit(0);
     //    return;
     //}
@@ -335,9 +335,12 @@ void Interactor::tian(AccountSystem &account, TrainSystem &train, OrderSystem &o
     }
     return;
 }
-
+/*
+[53287] refund_ticket -n 11 -u Firewatch
+*/
 /*
 [1317420] buy_ticket -u wziISXSDBlGAqy -q true -t 黑龙江省安达市 -f 河北省承德市 -d 07-27 -i IHEARDthatyouask -n 5208
 1843632
 mine:queue
+[3716] add_train -d 07-04|08-24 -s 山西省临汾市|河北省承德市|江西省宜春市|黑龙江省安达市|黑龙江省同江市|浙江省兰溪市|河南省平顶山市|北京市|湖北省孝感市|湖北省利川市|河北省冀州市|河南省三门峡市|广西宜州市|四川省西昌市|山东省莱芜市|辽宁省沈阳市|吉林省桦甸市|山西省侯马市|安徽省明光市 -n 19 -y O -p 200|24|330|432|284|239|343|352|187|207|361|413|451|24|110|108|200|176 -m 55458 -t 39|31|67|97|149|127|110|132|102|114|90|84|94|78|101|64|27|153 -x 16:38 -i IHEARDthatyouask -o 8|3|3|5|4|6|4|6|6|6|5|6|6|8|9|6|7
 */
