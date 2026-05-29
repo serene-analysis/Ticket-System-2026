@@ -202,15 +202,37 @@ void TrainSystem::query_ticket(stationName st, stationName en, date curdate, std
         std::cout << "0" << std::endl;
         return;
     }
-    std::vector<sposer> all = stationer_.all_similar(sposer(st, char64()));
-    int size = all.size();
+    std::vector<sposer> all = stationer_.all_similar(sposer(st, char64())),
+        eall = stationer_.all_similar(sposer(en, char64())), both;
+    int size = all.size(), esize = eall.size(), np = 0;
+    //std::cout << "size = " << size << std::endl;
+    //std::cout << "esize = " << esize << std::endl;
+    for(int i=0;i<size;i++){
+        //std::cout << "i = " << i << std::endl;
+        while(np != esize){
+            //std::cout << "np = " << np << std::endl;
+            if(eall[np].value < all[i].value){
+                np++;
+            }
+            else if(eall[np].value == all[i].value){
+                both.push_back(all[i]);
+                np++;
+            }
+            else break;
+        }
+    }
+    all = both, size = all.size();
+    //std::cout << "ok?" << std::endl;
     using Tproposal = tuple<int, char64, std::string>;
     std::vector<Tproposal> ans;
     for(int i=0;i<size;i++){
         poser pos = released_.only(poser(all[i].value, 0));
         TtrainInfo info = trainMemory_.get(pos.value);
         int spos = index(info, st), epos = index(info, en);
-        if(epos == -1 || spos > epos){
+        if(epos == -1){
+            throw false;
+        }
+        if(spos > epos){
             continue;
         }
         date startDate = curdate - leaving_gone_days(info, spos);
