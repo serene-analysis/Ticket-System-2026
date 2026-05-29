@@ -399,7 +399,7 @@ void TrainSystem::query_transfer(stationName st, stationName en, date curdate, s
                         ans = curAns;
                     }
                     else{
-                        ans = (ans < curAns ? curAns : ans);
+                        ans = (ans > curAns ? curAns : ans);
                     }
                 }
             }
