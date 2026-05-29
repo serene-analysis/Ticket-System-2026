@@ -33,15 +33,15 @@ void OrderSystem::buy_ticket(char64 username, char64 trainId, date curDate, stat
     int idx = startDate - saleDate.l;
     int100 tickets = train.ticketMemory_.indexed_get(pos.value, idx);
     int prices = cost(info, spos, epos), maxNumber = max_tickets(tickets, spos, epos);
-    Time start(startDate, startTime);
-    Time leavingTime = start + leaving_time_since_begin(info, spos), arrivalTime = leavingTime + pure_distance(info, spos, epos);
-    TorderInfo mem(timestamp, trainId, startDate, st, leavingTime, en, arrivalTime, prices, number, username);
     if(maxNumber < number){
         if(type != "true" || number > get<2>(info)){
             std::cout << "-1" << std::endl;
             return;
         }
     }
+    Time start(startDate, startTime);
+    Time leavingTime = start + leaving_time_since_begin(info, spos), arrivalTime = leavingTime + pure_distance(info, spos, epos);
+    TorderInfo mem(timestamp, trainId, startDate, st, leavingTime, en, arrivalTime, prices, number, username);
     int cou = orderMemory_.element_count;
     userorder_.insert(poser(username, cou));
     orderMemory_.push_back(mem);
